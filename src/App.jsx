@@ -1,27 +1,17 @@
-// import { useState } from 'react'
+import { useState } from "react"
 // import './App.css'
+// import { useLocalStorage } from "react-use"
 import InputBar from "./components/InputBar.jsx"
-import Bookmark from "./components/Bookmark.jsx"
+import BookmarkList from "./components/BookmarkList.jsx"
+import BookmarkForm from "./components/BookmarkForm.jsx"
 // import Header from './components/Header.jsx'
 
-// function BookmarkForm() {
-//
-// }
-//
-// function BookmarkItem() {
-//
-// }
-//
-// function BookmarkList({ bookmarks }) {
-//   const bookmarksItems = []
-//
-//   return (
-//
-//   )
-// }
-
 function App() {
-  // const [count, setCount] = useState(0)
+  const [showForm, setShowForm] = useState(false)
+
+  function toggleForm() {
+    setShowForm(!showForm)
+  }
 
   return (
     <>
@@ -36,11 +26,32 @@ function App() {
         <hr />
       </header>
 
-      <section className="flex w-full flex-col items-center">
-        <Bookmark />
-        <Bookmark />
-        <Bookmark />
-      </section>
+      <BookmarkList handleShowForm={toggleForm} />
+      {/* <BookmarkItem */}
+      {/*   title="Title" */}
+      {/*   author="author" */}
+      {/*   description="lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." */}
+      {/*   year="2025" */}
+      {/*   date="04 de dezembro de 2025" */}
+      {/*   tags={["tag1", "tag2", "tag3"]} */}
+      {/* /> */}
+      {/* <BookmarkItem */}
+      {/*   title="Title" */}
+      {/*   author="author" */}
+      {/*   description="Brief description" */}
+      {/*   year="2025" */}
+      {/*   date="04 de dezembro de 2025" */}
+      {/*   tags={["tag1", "tag2", "tag3"]} */}
+      {/* /> */}
+      {/* <BookmarkItem */}
+      {/*   title="Title" */}
+      {/*   author="author" */}
+      {/*   description="Brief description" */}
+      {/*   year="2025" */}
+      {/*   date="04 de dezembro de 2025" */}
+      {/*   tags={["tag1", "tag2", "tag3"]} */}
+      {/* /> */}
+      {showForm && <BookmarkForm handleShowForm={toggleForm} />}
     </>
   )
 }
