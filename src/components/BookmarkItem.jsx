@@ -1,14 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan"
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons/faPencilAlt"
 
 export default function BookmarkItem({
   url,
+  bookmark,
   title,
   author,
   year,
   description,
   date,
   handleShowForm,
+  onEdit,
+  onDelete,
 }) {
   // function tagList(tags) {
   //   return tags.map((name, index) => (
@@ -19,12 +23,13 @@ export default function BookmarkItem({
   // }
 
   return (
-    <div className="bookmark--card relative" onClick={handleShowForm}>
+    <div className="bookmark--card relative">
       <div className="bookmark--header">
         <h2 className="bookmark--title text-xl font-bold md:text-2xl">
           <a
             href={url}
             target="_blank"
+            rel="noopener noreferrer"
             className="text-blue-400 underline-offset-4 hover:underline"
           >
             <div className="inline-block w-fit cursor-pointer underline-offset-4 duration-100 ease-in-out hover:underline active:scale-105">
@@ -38,6 +43,12 @@ export default function BookmarkItem({
         <FontAwesomeIcon
           icon={faTrashCan}
           className="text-dark-tx-2 cursor-pointer hover:text-red-600"
+          onClick={() => onDelete(bookmark.id)}
+        />
+        <FontAwesomeIcon
+          icon={faPencilAlt}
+          className="text-dark-tx-2 coursor-pointer hover:text-dark-ye-2"
+          onClick={() => onEdit(bookmark.id)}
         />
       </div>
       <p className="text-sm md:text-base">{description}</p>

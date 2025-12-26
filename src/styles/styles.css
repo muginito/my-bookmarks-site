@@ -97,12 +97,6 @@
 /*   align-items: center; */
 /* } */
 
-hr {
-  margin: 2em 0;
-  border: 1px solid var(--ui-color-1);
-  width: 125%;
-}
-
 #page-title {
   font-family: "Montserrat", sans-serif;
   font-size: 2.5rem;
@@ -198,9 +192,4 @@ footer {
   text-align: center;
   font-size: 0.8rem;
   color: var(--font-color-2);
-
-  hr {
-    margin: 0 0 1em 0;
-    width: 42%;
-  }
 }
