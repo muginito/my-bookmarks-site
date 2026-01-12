@@ -1,46 +1,86 @@
-// import { useState } from 'react'
-// import './App.css'
-import InputBar from "./components/InputBar.jsx"
-import Bookmark from "./components/Bookmark.jsx"
-// import Header from './components/Header.jsx'
-
-// function BookmarkForm() {
-//
-// }
-//
-// function BookmarkItem() {
-//
-// }
-//
-// function BookmarkList({ bookmarks }) {
-//   const bookmarksItems = []
-//
-//   return (
-//
-//   )
-// }
+import { useState } from "react"
+import { useLocalStorage } from "react-use"
+import BookmarkList from "./components/BookmarkList.jsx"
+import BookmarkForm from "./components/BookmarkForm.jsx"
+import BookmarkItem from "./components/BookmarkItem.jsx"
+import Header from "./components/Header.jsx"
 
 function App() {
-  // const [count, setCount] = useState(0)
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
+  const [selectedBookmark, setSelectedBookmark] = useState(null)
+
+  //   function editBookmark(id) {
+  //     const myData = bookmarks.map((b) => {
+  // if (b.id === id) {
+  //         return {...b, }
+  //       }
+  //     })
+  //     setBookmarks(bookmarks.map((b) => (b.id === selectedBookmark.id ? { ...b, ...data } : b)))
+  //     setSelectedBookmark(null)
+  //     toggleForm(true)
+  //   }
+
+  function newBookmark(data) {
+    const output = {
+      ...data,
+      id: Date.now().toString(),
+      date: new Date().toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+    }
+    setBookmarks([...bookmarks, output])
+    toggleForm(true)
+  }
+
+  const deleteBookmark = (id) => {
+    const delBookmark = bookmarks.filter((b) => b.id !== id)
+    setBookmarks(delBookmark)
+  }
+
+  function toggleForm() {
+    setIsFormOpen(!isFormOpen)
+  }
 
   return (
     <>
-      <header className="m-auto flex w-[75%] max-w-[900px] flex-col items-center justify-center">
-        <h1 className="font-heading my-12 w-screen text-center text-4xl font-bold text-yellow-400 md:my-24 md:text-5xl">
-          My Bookmarks
-        </h1>
-        <div className="flex w-full flex-col gap-4">
-          <InputBar id="url" type="text" placeholder="Paste URL" />
-          <InputBar id="search" type="search" placeholder="Search..." />
-        </div>
-        <hr />
-      </header>
+      <Header newForm={newBookmark} />
+      {/* <section className="flex w-full flex-col items-center"> */}
+      {/*   {bookmarks.map((bookmark) => ( */}
+      {/*     <BookmarkItem */}
+      {/*       bookmark={bookmark} */}
+      {/*       key={bookmark.id} */}
+      {/*       title={bookmark.title} */}
+      {/*       author={bookmark.author} */}
+      {/*       description={bookmark.description} */}
+      {/*       year={bookmark.year} */}
+      {/*       date={bookmark.date} */}
+      {/*       // tags={bookmark.tags} */}
+      {/*       handleShowForm={setIsFormOpen} */}
+      {/*       onDelete={deleteBookmark} //Adicionar confirmação */}
+      {/*       // onEdit={editBookmark} */}
+      {/*     /> */}
+      {/*   ))} */}
+      {/* </section> */}
 
-      <section className="flex w-full flex-col items-center">
-        <Bookmark />
-        <Bookmark />
-        <Bookmark />
-      </section>
+      <BookmarkList
+        bookmarks={bookmarks}
+        // handleBookmarks={setBookmarks}
+        handleShowForm={setIsFormOpen}
+        onDelete={deleteBookmark}
+      />
+      {isFormOpen && (
+        <BookmarkForm
+          bookmarks={bookmarks}
+          initialData={selectedBookmark}
+          setLocalStorage={setBookmarks}
+          mode={selectedBookmark ? "edit" : "new"}
+          onSubmit={newBookmark}
+          onClose={() => setIsFormOpen(false)}
+        />
+      )}
     </>
   )
 }

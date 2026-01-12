@@ -1,16 +1,16 @@
-# React + Vite
+# Meus Bookmarks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto simples para favoritar links e fazer anotações. Permite adicionar, editar, remover e buscar bookmarks com suas respectivas anotações.
 
-Currently, two official plugins are available:
+## Proposta
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A ideia é criar um site leve e fácil de usar para gerenciar links importantes, artigos interessantes, tutoriais e qualquer outro tipo de conteúdo online que o usuário queira salvar para referência futura. Permite buscar rapidamente entre os bookmarks salvos e manter tudo organizado.
 
-## React Compiler
+## Detalhes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Adicionar novos bookmarks com título, URL, autor, ano de publicação e anotações.
+- Editar bookmarks existentes.
+- Remover bookmarks.
+- Buscar bookmarks por título, autor, ano ou descrição.
+- Interface simples e intuitiva.
+- Armazenamento local dos dados (sem necessidade de banco de dados).
