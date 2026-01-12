@@ -10,7 +10,7 @@ export default function Header({ newForm }) {
         {/* <InputBar id="url" type="text" placeholder="Paste URL" /> */}
         <InputBar id="search" type="search" placeholder="Search..." />
         <button
-          className="bg-dark-ye-2 text-dark-bg-2 w-fit cursor-pointer rounded-4xl px-4 font-bold whitespace-nowrap hover:bg-yellow-300"
+          className="bg-dark-ye text-dark-bg-2 w-fit cursor-pointer rounded-4xl px-4 font-bold whitespace-nowrap hover:bg-yellow-300 active:scale-95"
           onClick={newForm}
         >
           New Bookmark
