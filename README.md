@@ -17,9 +17,9 @@ A ideia é criar um site leve e fácil de usar para gerenciar links importantes,
 
 ## TODO
 
-    - [x] Implementar um form reutilizável para adicionar e editar bookmarks.
-    - [] Implementar fuzzy search
-    - [] Adicionar validação de URL ao adicionar ou editar bookmarks.
-    - [] Implementar paginação para a lista de bookmarks.
-    - [] Botão para alternar tema (claro, escuro e auto)
-    - [] Adicionar motions para melhorar a experiência do usuário.
+- [x] Implementar um form reutilizável para adicionar e editar bookmarks.
+- [ ] Implementar fuzzy search
+- [ ] Adicionar validação de URL ao adicionar ou editar bookmarks.
+- [ ] Implementar paginação para a lista de bookmarks.
+- [ ] Botão para alternar tema (claro, escuro e auto)
+- [ ] Adicionar motions para melhorar a experiência do usuário.
