@@ -15,6 +15,14 @@ A ideia é criar um site leve e fácil de usar para gerenciar links importantes,
 - Interface simples e intuitiva.
 - Armazenamento local dos dados (sem necessidade de banco de dados).
 
+## Equipe
+
+- Bruno Machado
+- Davi Massena
+- Igor Matta
+- Leonardo Rodrigues
+- Miguel Ramos
+
 ## TODO
 
 - [x] Implementar um form reutilizável para adicionar e editar bookmarks.
