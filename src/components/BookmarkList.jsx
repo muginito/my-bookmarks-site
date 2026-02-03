@@ -1,6 +1,6 @@
 import BookmarkItem from "./BookmarkItem"
 
-export default function BookmarkList({ bookmarks, handleBookmarks, onDelete, handleShowForm }) {
+export default function BookmarkList({ bookmarks, onDelete, onEdit }) {
   return (
     <section className="flex w-full flex-col items-center">
       {bookmarks.map((bookmark) => (
@@ -12,9 +12,10 @@ export default function BookmarkList({ bookmarks, handleBookmarks, onDelete, han
           description={bookmark.description}
           year={bookmark.year}
           date={bookmark.date}
+          url={bookmark.url}
           tags={bookmark.tags}
-          handleShowForm={handleShowForm}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </section>

@@ -2,26 +2,32 @@ import { useState } from "react"
 import { useLocalStorage } from "react-use"
 import BookmarkList from "./components/BookmarkList.jsx"
 import BookmarkForm from "./components/BookmarkForm.jsx"
-import BookmarkItem from "./components/BookmarkItem.jsx"
+import DeletionPopup from "./components/DeletionPopup.jsx"
 import Header from "./components/Header.jsx"
 
 function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
   const [selectedBookmark, setSelectedBookmark] = useState(null)
+  const [delConfirm, setDelConfirm] = useState({ show: false, id: null })
 
-  //   function editBookmark(id) {
-  //     const myData = bookmarks.map((b) => {
-  // if (b.id === id) {
-  //         return {...b, }
-  //       }
-  //     })
-  //     setBookmarks(bookmarks.map((b) => (b.id === selectedBookmark.id ? { ...b, ...data } : b)))
-  //     setSelectedBookmark(null)
-  //     toggleForm(true)
-  //   }
+  // Open New Form
+  function handleOpenNewForm() {
+    setSelectedBookmark(null)
+    setIsFormOpen(true)
+  }
 
-  function newBookmark(data) {
+  // Open Edit Form
+  function handleOpenEditForm(id) {
+    const bookmark = bookmarks.find((b) => b.id === id)
+    if (bookmark) {
+      setSelectedBookmark(bookmark)
+      setIsFormOpen(true)
+    }
+  }
+
+  // Add Bookmark
+  function handleAddBookmark(data) {
     const output = {
       ...data,
       id: Date.now().toString(),
@@ -32,53 +38,54 @@ function App() {
       }),
     }
     setBookmarks([...bookmarks, output])
-    toggleForm(true)
   }
 
-  const deleteBookmark = (id) => {
-    const delBookmark = bookmarks.filter((b) => b.id !== id)
-    setBookmarks(delBookmark)
+  // Edit Bookmark
+  function handleEditBookmark(data) {
+    setBookmarks(bookmarks.map((b) => (b.id === selectedBookmark.id ? { ...b, ...data } : b)))
   }
 
-  function toggleForm() {
-    setIsFormOpen(!isFormOpen)
+  // Close Form
+  function handleCloseForm() {
+    setIsFormOpen(false)
+    setSelectedBookmark(null)
   }
+
+  // Delete Bookmark
+  function handleDeleteBookmark(id) {
+    if (delConfirm.show && delConfirm.id) {
+      const delBookmark = bookmarks.filter((b) => b.id !== id)
+      setBookmarks(delBookmark)
+      setDelConfirm({ show: false, id: null })
+    } else {
+      setDelConfirm({ show: true, id: id })
+    }
+  }
+  // function handleDeleteBookmark(id) {
+  //   const delBookmark = bookmarks.filter((b) => b.id !== id)
+  //   setBookmarks(delBookmark)
+  // }
 
   return (
     <>
-      <Header newForm={newBookmark} />
-      {/* <section className="flex w-full flex-col items-center"> */}
-      {/*   {bookmarks.map((bookmark) => ( */}
-      {/*     <BookmarkItem */}
-      {/*       bookmark={bookmark} */}
-      {/*       key={bookmark.id} */}
-      {/*       title={bookmark.title} */}
-      {/*       author={bookmark.author} */}
-      {/*       description={bookmark.description} */}
-      {/*       year={bookmark.year} */}
-      {/*       date={bookmark.date} */}
-      {/*       // tags={bookmark.tags} */}
-      {/*       handleShowForm={setIsFormOpen} */}
-      {/*       onDelete={deleteBookmark} //Adicionar confirmação */}
-      {/*       // onEdit={editBookmark} */}
-      {/*     /> */}
-      {/*   ))} */}
-      {/* </section> */}
-
+      <Header newForm={handleOpenNewForm} />
       <BookmarkList
         bookmarks={bookmarks}
-        // handleBookmarks={setBookmarks}
-        handleShowForm={setIsFormOpen}
-        onDelete={deleteBookmark}
+        onDelete={handleDeleteBookmark}
+        onEdit={handleOpenEditForm}
       />
+      {delConfirm.show && (
+        <DeletionPopup
+          onConfirm={() => handleDeleteBookmark(delConfirm.id)}
+          onCancel={() => setDelConfirm({ show: false, id: null })}
+        />
+      )}
       {isFormOpen && (
         <BookmarkForm
-          bookmarks={bookmarks}
           initialData={selectedBookmark}
-          setLocalStorage={setBookmarks}
           mode={selectedBookmark ? "edit" : "new"}
-          onSubmit={newBookmark}
-          onClose={() => setIsFormOpen(false)}
+          onSubmit={selectedBookmark ? handleEditBookmark : handleAddBookmark}
+          onClose={handleCloseForm}
         />
       )}
     </>

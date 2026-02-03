@@ -11,7 +11,7 @@
   .bookmark--card {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 60%;
     background-color: var(--color-dark-ui);
     border-radius: 16px;
     border: 2px solid var(--color-dark-ui-3);
@@ -78,6 +78,31 @@
   --ui-color-1: #403e3c;
   --ui-color-2: #575653;
   --link-color: #4385be;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark-bg-2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-base-700);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-yellow-400);
+  transition: background 0.3s ease;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-base-700) var(--color-dark-bg-2);
 }
 
 /* body { */

@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan"
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons/faPencilAlt"
 
 export default function BookmarkItem({
   url,
@@ -10,20 +9,11 @@ export default function BookmarkItem({
   year,
   description,
   date,
-  handleShowForm,
   onEdit,
   onDelete,
 }) {
-  // function tagList(tags) {
-  //   return tags.map((name, index) => (
-  //     <div key={index} className="bookmark--tag cursor-pointer text-xs md:text-sm">
-  //       #{name}
-  //     </div>
-  //   ))
-  // }
-
   return (
-    <div className="bookmark--card relative">
+    <div className="bookmark--card relative" onClick={() => onEdit(bookmark.id)}>
       <div className="bookmark--header">
         <h2 className="bookmark--title text-xl font-bold md:text-2xl">
           <a
@@ -31,6 +21,7 @@ export default function BookmarkItem({
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-400 underline-offset-4 hover:underline"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="inline-block w-fit cursor-pointer underline-offset-4 duration-100 ease-in-out hover:underline active:scale-105">
               {title}
@@ -42,13 +33,11 @@ export default function BookmarkItem({
         </h2>
         <FontAwesomeIcon
           icon={faTrashCan}
-          className="text-dark-tx-2 cursor-pointer hover:text-red-600"
-          onClick={() => onDelete(bookmark.id)}
-        />
-        <FontAwesomeIcon
-          icon={faPencilAlt}
-          className="text-dark-tx-2 coursor-pointer hover:text-dark-ye-2"
-          onClick={() => onEdit(bookmark.id)}
+          className="text-dark-tx-2 cursor-pointer text-lg hover:text-red-600 active:scale-95 md:text-xl"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete(bookmark.id)
+          }}
         />
       </div>
       <p className="text-sm md:text-base">{description}</p>
