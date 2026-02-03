@@ -2,32 +2,10 @@ import { useLockBodyScroll } from "react-use"
 import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 
-export default function BookmarkForm({
-  bookmarks,
-  initialData,
-  setLocalStorage,
-  mode,
-  // onSubmit,
-  onClose,
-}) {
-  function onSubmit(data) {
-    const output = {
-      ...data,
-      id: Date.now().toString(),
-      date: new Date().toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }),
-    }
-    setLocalStorage([...bookmarks, output])
-
-    onClose()
-  }
-
+export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
   const { register, handleSubmit, reset } = useForm({
     defaultValues:
-      mode === "edit"
+      mode === "edit" && initialData
         ? {
             title: initialData.title,
             author: initialData.author,
@@ -45,15 +23,36 @@ export default function BookmarkForm({
   })
 
   useEffect(() => {
-    reset(initialData)
-  }, [initialData, reset])
+    if (mode === "edit" && initialData) {
+      reset(initialData)
+    } else {
+      reset({
+        title: "",
+        author: "",
+        year: "",
+        url: "",
+        description: "",
+      })
+    }
+  }, [initialData, mode, reset])
+
+  function handleFormSubmit(data) {
+    onSubmit(data)
+    reset()
+    onClose()
+  }
+
+  function handleClose() {
+    reset()
+    onClose()
+  }
 
   useLockBodyScroll()
   return (
     <div className="fixed top-0 flex justify-center">
-      <div className="h-screen w-screen backdrop-blur-xs" onClick={onClose}></div>
+      <div className="h-screen w-screen backdrop-blur-xs" onClick={handleClose}></div>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="bg-dark-ui sm:border-dark-ui-3 absolute mx-auto flex h-screen w-screen flex-col p-12 focus:outline-0 sm:my-20 sm:h-[82dvh] sm:w-2xl sm:rounded-2xl sm:border-2"
       >
         <div className="mb-4 grid grid-cols-3">
