@@ -66,6 +66,30 @@ function App() {
   //   setBookmarks(delBookmark)
   // }
 
+  function showDeleteToast() {
+    return (
+      delConfirm.show && (
+        <DeletionPopup
+          onConfirm={() => handleDeleteBookmark(delConfirm.id)}
+          onCancel={() => setDelConfirm({ show: false, id: null })}
+        />
+      )
+    )
+  }
+
+  function showForm() {
+    return (
+      isFormOpen && (
+        <BookmarkForm
+          initialData={selectedBookmark}
+          mode={selectedBookmark ? "edit" : "new"}
+          onSubmit={selectedBookmark ? handleEditBookmark : handleAddBookmark}
+          onClose={handleCloseForm}
+        />
+      )
+    )
+  }
+
   return (
     <>
       <Header newForm={handleOpenNewForm} />
@@ -74,20 +98,8 @@ function App() {
         onDelete={handleDeleteBookmark}
         onEdit={handleOpenEditForm}
       />
-      {delConfirm.show && (
-        <DeletionPopup
-          onConfirm={() => handleDeleteBookmark(delConfirm.id)}
-          onCancel={() => setDelConfirm({ show: false, id: null })}
-        />
-      )}
-      {isFormOpen && (
-        <BookmarkForm
-          initialData={selectedBookmark}
-          mode={selectedBookmark ? "edit" : "new"}
-          onSubmit={selectedBookmark ? handleEditBookmark : handleAddBookmark}
-          onClose={handleCloseForm}
-        />
-      )}
+      {showDeleteToast()}
+      {showForm()}
     </>
   )
 }
