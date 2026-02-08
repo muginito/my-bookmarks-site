@@ -37,7 +37,7 @@ function App() {
         year: "numeric",
       }),
     }
-    setBookmarks([...bookmarks, output])
+    setBookmarks([output, ...bookmarks])
   }
 
   // Edit Bookmark
