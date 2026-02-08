@@ -14,7 +14,7 @@ export default function BookmarkList({ bookmarks, onDelete, onEdit }) {
 
   return (
     <>
-      <section className="flex flex-col items-center w-full">
+      <section className="flex flex-col items-center gap-6 w-full">
         {currentItems.map((bookmark) => (
           <BookmarkItem
             key={bookmark.id}
