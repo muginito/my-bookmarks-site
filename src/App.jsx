@@ -13,15 +13,15 @@ function App() {
   const [delConfirm, setDelConfirm] = useState({ show: false, id: null })
 
  // configuração do Fuse.js (busca)
-  const [busca, setBusca] = useState("")
-  const opcoesFuse = {
+  const [search, setSearch] = useState("")
+  const optionFuse = {
     keys: ["title", "author", "description", "url", "year"],
     threshold: 0.2, //sensibilidade, coloquei no "padrão  "
   };
-  const fuse = new Fuse(bookmarks, opcoesFuse);
+  const fuse = new Fuse(bookmarks, optionFuse);
   // logica de filtragem, se a lista tiver vazia ele mostra a lista toda
-  const resultadoBusca = busca
-    ? fuse.search(busca).map(res => res.item)
+  const searchResult = search
+    ? fuse.search(search).map(res => res.item)
     : bookmarks;
 
   // Open New Form
@@ -83,9 +83,9 @@ function App() {
 // linha 85 bookmarks={bookmarks} (edit)
   return (
     <>
-      <Header newForm={handleOpenNewForm} onSearch={setBusca} />
+      <Header newForm={handleOpenNewForm} onSearch={setSearch} />
       <BookmarkList
-        bookmarks={resultadoBusca}
+        bookmarks={searchResult}
         onDelete={handleDeleteBookmark}
         onEdit={handleOpenEditForm}
       />
