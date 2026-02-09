@@ -1,12 +1,13 @@
 import { useLockBodyScroll } from "react-use"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { useEffect } from "react"
 import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faX } from "@fortawesome/free-solid-svg-icons"
+import parse from "node-html-parser"
 
 export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, control } = useForm({
     defaultValues:
       mode === "edit" && initialData
         ? {
@@ -38,6 +39,51 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
       })
     }
   }, [initialData, mode, reset])
+
+  function debounce(func, timeout = 100) {
+    let timer
+    return (...args) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        func.apply(this, args)
+      }, timeout)
+    }
+  }
+
+  async function fetchUrlMetaData(url) {
+    if (!url) return ""
+
+    const baseUrl = new URL("https://corsproxy.io")
+    baseUrl.searchParams.append("url", url)
+
+    const resp = await fetch(baseUrl)
+
+    const nodes = parse(await resp.text())
+
+    let metadata = {}
+
+    nodes.querySelectorAll("meta").forEach((meta) => {
+      if (meta.getAttribute("name") == "author" && metadata.author == undefined) {
+        metadata.author = meta.getAttribute("content")
+      }
+      if (meta.getAttribute("name") == "description" && metadata.description == undefined) {
+        metadata.description = meta.getAttribute("content")
+      }
+    })
+
+    reset({
+      ...register,
+      title: nodes.querySelector("title").textContent,
+      author: metadata.author,
+      description: metadata.description,
+    })
+  }
+
+  const watchedValue = useWatch({
+    name: "url",
+    compute: debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
+    control,
+  })
 
   function handleFormSubmit(data) {
     onSubmit(data)
