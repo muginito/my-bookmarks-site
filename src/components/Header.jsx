@@ -1,6 +1,7 @@
 import InputBar from "./InputBar"
 
-export default function Header({ newForm }) {
+export default function Header({ newForm, onSearch }) {
+  // Coloquei a função de busca do App
   return (
     <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-[900px]">
       <h1
@@ -15,7 +16,9 @@ export default function Header({ newForm }) {
           id="search"
           type="search"
           placeholder="Search..."
-          // className="md:font-normal text-sm md:text-base"
+          // className="text-sm md:text-base md:font-normal"
+          onChange={(e) => onSearch(e.target.value)}
+          // Depois que o usuario digita algo, é enviado para o app atualizar o estado
         />
         <button
           className="bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit font-bold text-dark-bg-2
