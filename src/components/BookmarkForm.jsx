@@ -40,6 +40,20 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     }
   }, [initialData, mode, reset])
 
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if (event.key === "Escape") {
+        handleClose()
+      }
+    }
+
+    document.addEventListener("keydown", handleEscapeKey)
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   function debounce(func, timeout = 100) {
     let timer
     return (...args) => {
