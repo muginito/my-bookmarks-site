@@ -4,7 +4,9 @@ import BookmarkList from "./components/BookmarkList.jsx"
 import BookmarkForm from "./components/BookmarkForm.jsx"
 import DeletionPopup from "./components/DeletionPopup.jsx"
 import Header from "./components/Header.jsx"
-import Fuse from 'fuse.js'
+import Fuse from "fuse.js"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFileExport } from "@fortawesome/free-solid-svg-icons"
 
 function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -12,17 +14,15 @@ function App() {
   const [selectedBookmark, setSelectedBookmark] = useState(null)
   const [delConfirm, setDelConfirm] = useState({ show: false, id: null })
 
- // configuração do Fuse.js (busca)
+  // configuração do Fuse.js (busca)
   const [search, setSearch] = useState("")
   const optionFuse = {
     keys: ["title", "author", "description", "url", "year"],
     threshold: 0.2, //sensibilidade, coloquei no "padrão  "
-  };
-  const fuse = new Fuse(bookmarks, optionFuse);
+  }
+  const fuse = new Fuse(bookmarks, optionFuse)
   // logica de filtragem, se a lista tiver vazia ele mostra a lista toda
-  const searchResult = search
-    ? fuse.search(search).map(res => res.item)
-    : bookmarks;
+  const searchResult = search ? fuse.search(search).map((res) => res.item) : bookmarks
 
   // Open New Form
   function handleOpenNewForm() {
@@ -103,8 +103,44 @@ function App() {
     )
   }
 
+  function exportBookmarks() {
+    const dataStr = JSON.stringify(bookmarks, null, 2)
+    const blob = new Blob([dataStr], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "bookmarks.json"
+    a.click()
+
+    URL.revokeObjectURL(url)
+  }
+
+  function importBookmarks(event) {
+    const file = event.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        try {
+          const importedBookmarks = JSON.parse(e.target.result)
+          if (Array.isArray(importedBookmarks)) {
+            setBookmarks(importedBookmarks)
+          }
+        } catch (error) {
+          console.error("Erro ao importar bookmarks:", error)
+        }
+      }
+    }
+  }
+
   return (
     <>
+      <FontAwesomeIcon
+        icon={faFileExport}
+        className="top-8 right-8 absolute text-dark-ui sm:text-dark-ui-2 text-base
+          hover:text-base-700 sm:text-2xl active:scale-95 duration-200 cursor-pointer"
+        onClick={exportBookmarks}
+      />
       <Header newForm={handleOpenNewForm} onSearch={setSearch} />
       <BookmarkList
         bookmarks={searchResult}
@@ -116,7 +152,5 @@ function App() {
     </>
   )
 }
-
-
 
 export default App
