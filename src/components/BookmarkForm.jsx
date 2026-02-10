@@ -1,6 +1,6 @@
 import { useLockBodyScroll } from "react-use"
 import { useForm, useWatch } from "react-hook-form"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faX } from "@fortawesome/free-solid-svg-icons"
@@ -52,7 +52,7 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     return () => {
       document.removeEventListener("keydown", handleEscapeKey)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [handleClose])
 
   function debounce(func, timeout = 100) {
     let timer
@@ -106,10 +106,10 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     onClose()
   }
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     reset()
     onClose()
-  }
+  }, [reset, onClose])
 
   useLockBodyScroll()
   return (

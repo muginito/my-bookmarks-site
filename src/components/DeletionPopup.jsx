@@ -16,7 +16,7 @@ export default function DeletionPopup({ onConfirm, onCancel }) {
     return () => {
       document.removeEventListener("keydown", handleEscapeKey)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [onCancel])
 
   return (
     <div className="top-0 fixed flex justify-center">
