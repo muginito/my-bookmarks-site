@@ -30,19 +30,26 @@ export default function BookmarkList({ bookmarks, onDelete, onEdit }) {
             onEdit={onEdit}
           />
         ))}
-        <hr className="my-10 border border-dark-ui-3 w-32 sm:w-2xs" />
-        <div className="flex justify-center items-center gap-8 pb-4">
-          <Button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-            <FontAwesomeIcon icon={faAngleLeft} className="text-base-200" />
-          </Button>
-          <span> Page {currentPage} </span>
-          <Button
-            disabled={indexOfLastItem >= bookmarks.length}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-          >
-            <FontAwesomeIcon icon={faAngleRight} />
-          </Button>
-        </div>
+        {Object.keys(bookmarks).length > itemsPerPage && (
+          <>
+            <hr className="my-10 border border-dark-ui-3 w-32 sm:w-2xs" />
+            <div className="flex justify-center items-center gap-8 pb-4">
+              <Button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+              >
+                <FontAwesomeIcon icon={faAngleLeft} className="text-base-200" />
+              </Button>
+              <span> Page {currentPage} </span>
+              <Button
+                disabled={indexOfLastItem >= bookmarks.length}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+              >
+                <FontAwesomeIcon icon={faAngleRight} />
+              </Button>
+            </div>
+          </>
+        )}
       </section>
     </>
   )

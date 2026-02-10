@@ -1,4 +1,4 @@
-export default function Button({ children, className, ...props }) {
+export default function Button({ children, ...props }) {
   return (
     <button
       className="bg-dark-ui light:bg-light-ui px-5 py-2.5 border border-transparent

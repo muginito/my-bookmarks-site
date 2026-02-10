@@ -1,12 +1,13 @@
 import { useLockBodyScroll } from "react-use"
-import { useForm } from "react-hook-form"
-import { useEffect } from "react"
+import { useForm, useWatch } from "react-hook-form"
+import { useCallback, useEffect } from "react"
 import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faX } from "@fortawesome/free-solid-svg-icons"
+import parse from "node-html-parser"
 
 export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, control } = useForm({
     defaultValues:
       mode === "edit" && initialData
         ? {
@@ -39,25 +40,86 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     }
   }, [initialData, mode, reset])
 
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if (event.key === "Escape") {
+        handleClose()
+      }
+    }
+
+    document.addEventListener("keydown", handleEscapeKey)
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey)
+    }
+  }, [handleClose])
+
+  function debounce(func, timeout = 100) {
+    let timer
+    return (...args) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        func.apply(this, args)
+      }, timeout)
+    }
+  }
+
+  async function fetchUrlMetaData(url) {
+    if (!url) return ""
+
+    const baseUrl = new URL("https://corsproxy.io")
+    baseUrl.searchParams.append("url", url)
+
+    const resp = await fetch(baseUrl)
+
+    const nodes = parse(await resp.text())
+
+    let metadata = {}
+
+    nodes.querySelectorAll("meta").forEach((meta) => {
+      if (meta.getAttribute("name") == "author" && metadata.author == undefined) {
+        metadata.author = meta.getAttribute("content")
+      }
+      if (meta.getAttribute("name") == "description" && metadata.description == undefined) {
+        metadata.description = meta.getAttribute("content")
+      }
+    })
+
+    reset({
+      ...register,
+      title: nodes.querySelector("title").textContent,
+      author: metadata.author,
+      description: metadata.description,
+    })
+  }
+
+  const watchedValue = useWatch({
+    name: "url",
+    compute:
+      mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
+    control,
+  })
+
   function handleFormSubmit(data) {
     onSubmit(data)
     reset()
     onClose()
   }
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     reset()
     onClose()
-  }
+  }, [reset, onClose])
 
   useLockBodyScroll()
   return (
-    <div className="top-0 fixed flex justify-center">
-      <div className="backdrop-blur-xs w-screen h-screen" onClick={handleClose}></div>
+    <div className="top-0 fixed flex justify-center w-screen h-screen">
+      <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleClose}></div>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="absolute flex flex-col bg-dark-ui mx-auto sm:my-20 p-8 sm:p-10 sm:border-2
-          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]"
+        className="absolute flex flex-col bg-dark-ui sm:my-20 p-8 sm:p-10 sm:border-2
+          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]
+          overflow-y-auto"
       >
         <FontAwesomeIcon
           icon={faX}
@@ -99,10 +161,17 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
         <textarea
           type="text"
           placeholder="Escreva algo..."
-          className="mt-4 mb-8 focus:outline-0 h-screen text-sm resize-none"
+          className="mt-4 mb-8 focus:outline-0 min-h-50 text-sm resize-none grow"
           {...register("description", { required: true })}
         />
-        <Button type="submit">{initialData?.id ? "Salvar alterações" : "Salvar"}</Button>
+        <Button
+          type="submit"
+          className="bg-dark-ui light:bg-light-ui sm:m-auto mb-10 px-5 py-2.5 border
+            border-transparent hover:border-yellow-400 rounded-lg text-base transition-colors
+            duration-250 cursor-pointer"
+        >
+          {initialData?.id ? "Salvar alterações" : "Salvar"}
+        </Button>
       </form>
     </div>
   )

@@ -12,6 +12,14 @@ export default function BookmarkItem({
   onEdit,
   onDelete,
 }) {
+  const isValidUrl = (url) => {
+    try {
+      new URL(url)
+      return true
+    } catch {
+      return false
+    }
+  }
   return (
     <div
       className="relative bg-dark-bg-2 p-6 border-2 border-dark-ui-2 rounded-2xl w-xs sm:w-sm
@@ -20,20 +28,24 @@ export default function BookmarkItem({
     >
       <div className="flex justify-between items-center mb-1 bookmark--header">
         <h2 className="font-bold text-xl md:text-2xl bookmark--title">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 hover:underline underline-offset-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              className="inline-block w-fit hover:underline underline-offset-4 active:scale-105
-                duration-100 ease-in-out cursor-pointer"
+          {isValidUrl(url) ? (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400"
+              onClick={(e) => e.stopPropagation()}
             >
-              {title}
-            </div>
-          </a>
+              <div
+                className="inline-block w-fit hover:underline underline-offset-4 active:scale-105
+                  duration-200 ease-in-out cursor-pointer"
+              >
+                {title}
+              </div>
+            </a>
+          ) : (
+            <div className="inline-block w-fit cursor-pointer">{title}</div>
+          )}
           {year && (
             <span className="invisible sm:visible ml-2 w-fit text-base md:text-lg sm:">
               ({year})
