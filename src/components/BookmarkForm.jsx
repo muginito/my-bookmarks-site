@@ -81,7 +81,8 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
 
   const watchedValue = useWatch({
     name: "url",
-    compute: debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
+    compute:
+      mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
     control,
   })
 
@@ -98,12 +99,13 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
 
   useLockBodyScroll()
   return (
-    <div className="top-0 fixed flex justify-center">
-      <div className="backdrop-blur-xs w-screen h-screen" onClick={handleClose}></div>
+    <div className="top-0 fixed flex justify-center w-screen h-screen">
+      <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleClose}></div>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="absolute flex flex-col bg-dark-ui mx-auto sm:my-20 p-8 sm:p-10 sm:border-2
-          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]"
+        className="absolute flex flex-col bg-dark-ui sm:my-20 p-8 sm:p-10 sm:border-2
+          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]
+          overflow-y-auto"
       >
         <FontAwesomeIcon
           icon={faX}
@@ -145,10 +147,17 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
         <textarea
           type="text"
           placeholder="Escreva algo..."
-          className="mt-4 mb-8 focus:outline-0 h-screen text-sm resize-none"
+          className="mt-4 mb-8 focus:outline-0 min-h-50 text-sm resize-none grow"
           {...register("description", { required: true })}
         />
-        <Button type="submit">{initialData?.id ? "Salvar alterações" : "Salvar"}</Button>
+        <Button
+          type="submit"
+          className="bg-dark-ui light:bg-light-ui sm:m-auto mb-10 px-5 py-2.5 border
+            border-transparent hover:border-yellow-400 rounded-lg text-base transition-colors
+            duration-250 cursor-pointer"
+        >
+          {initialData?.id ? "Salvar alterações" : "Salvar"}
+        </Button>
       </form>
     </div>
   )
