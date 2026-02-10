@@ -8,7 +8,7 @@ export default function Header({ newForm, onSearch }) {
         className="my-12 md:my-24 w-full font-heading font-bold text-yellow-400 text-3xl md:text-6xl
           text-center"
       >
-        My Bookmarks
+        Meus Bookmarks
       </h1>
       <div className="flex gap-4 w-full">
         {/* <InputBar id="url" type="text" placeholder="Paste URL" /> */}
@@ -16,7 +16,7 @@ export default function Header({ newForm, onSearch }) {
           id="search"
           type="search"
           placeholder="Search..."
-          // className="text-sm md:text-base md:font-normal"
+          // className="md:font-normal text-sm md:text-base"
           onChange={(e) => onSearch(e.target.value)}
           // Depois que o usuario digita algo, é enviado para o app atualizar o estado
         />
