@@ -1,7 +1,22 @@
 import { useLockBodyScroll } from "react-use"
+import { useEffect } from "react"
 
 export default function DeletionPopup({ onConfirm, onCancel }) {
   useLockBodyScroll()
+
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if (event.key === "Escape") {
+        onCancel()
+      }
+    }
+
+    document.addEventListener("keydown", handleEscapeKey)
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey)
+    }
+  }, [onCancel])
 
   return (
     <div className="top-0 fixed flex justify-center">
