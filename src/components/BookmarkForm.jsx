@@ -40,6 +40,11 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     }
   }, [initialData, mode, reset])
 
+  const handleClose = useCallback(() => {
+    reset()
+    onClose()
+  }, [reset, onClose])
+
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.key === "Escape") {
@@ -54,62 +59,77 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     }
   }, [handleClose])
 
-  function debounce(func, timeout = 100) {
-    let timer
-    return (...args) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        func.apply(this, args)
-      }, timeout)
-    }
-  }
+  // function debounce(func, timeout = 100) {
+  //   let timer
+  //   return (...args) => {
+  //     clearTimeout(timer)
+  //     timer = setTimeout(() => {
+  //       func.apply(this, args)
+  //     }, timeout)
+  //   }
+  // }
 
-  async function fetchUrlMetaData(url) {
-    if (!url) return ""
-
-    const baseUrl = new URL("https://corsproxy.io")
-    baseUrl.searchParams.append("url", url)
-
-    const resp = await fetch(baseUrl)
-
-    const nodes = parse(await resp.text())
-
-    let metadata = {}
-
-    nodes.querySelectorAll("meta").forEach((meta) => {
-      if (meta.getAttribute("name") == "author" && metadata.author == undefined) {
-        metadata.author = meta.getAttribute("content")
-      }
-      if (meta.getAttribute("name") == "description" && metadata.description == undefined) {
-        metadata.description = meta.getAttribute("content")
-      }
-    })
-
-    reset({
-      ...register,
-      title: nodes.querySelector("title").textContent,
-      author: metadata.author,
-      description: metadata.description,
-    })
-  }
-
-  const watchedValue = useWatch({
+  const url = useWatch({
     name: "url",
-    compute:
-      mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
     control,
   })
+
+  useEffect(() => {
+    async function fetchUrlMetaData(url) {
+      if (!url) return ""
+
+      const baseUrl = new URL("https://corsproxy.io")
+      baseUrl.searchParams.append("url", url)
+
+      const resp = await fetch(baseUrl)
+
+      const nodes = parse(await resp.text())
+
+      let metadata = {}
+
+      nodes.querySelectorAll("meta").forEach((meta) => {
+        if (meta.getAttribute("name") == "author" && metadata.author == undefined) {
+          metadata.author = meta.getAttribute("content")
+        }
+        if (meta.getAttribute("name") == "description" && metadata.description == undefined) {
+          metadata.description = meta.getAttribute("content")
+        }
+      })
+
+      reset({
+        ...register,
+        title: nodes.querySelector("title").textContent,
+        author: metadata.author,
+        description: metadata.description,
+      })
+    }
+
+    if (mode !== "edit" && url) {
+      const timer = setTimeout(() => {
+        fetchUrlMetaData(url)
+      }, 500)
+
+      return () => clearTimeout(timer)
+    }
+  }, [url, mode, register, reset])
+
+  // const watchedValue = useWatch(  // const watchedValue = useWatch({
+  //   name: "url",
+  //   compute:
+  //     mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
+  //   control,
+  // }){
+  //   name: "url",
+  //   compute:
+  //     mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
+  //   control,
+  // })
 
   function handleFormSubmit(data) {
     onSubmit(data)
     reset()
     onClose()
   }
-
-  const handleClose = useCallback(() => {
-    reset()
-    onClose()
-  }, [reset, onClose])
 
   useLockBodyScroll()
   return (
