@@ -1,11 +1,14 @@
 import InputBar from "./InputBar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFileExport } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate } from "react-router"
 
-export default function Header({ newForm, onSearch, onExport }) {
+export default function Header({ onSearch, onExport }) {
+  const navigate = useNavigate()
+
   // Coloquei a função de busca do App
   return (
-    <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-[900px]">
+    <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-225">
       <h1
         className="my-12 md:my-24 w-full font-heading font-bold text-yellow-400 text-3xl md:text-6xl
           text-center"
@@ -23,9 +26,9 @@ export default function Header({ newForm, onSearch, onExport }) {
           // Depois que o usuario digita algo, é enviado para o app atualizar o estado
         />
         <button
-          className="bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit font-bold text-dark-bg-2
-            text-sm md:text-base whitespace-nowrap active:scale-95 cursor-pointer hidden md:block"
-          onClick={newForm}
+          className="hidden md:block bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit font-bold
+            text-dark-bg-2 text-sm md:text-base whitespace-nowrap active:scale-95 cursor-pointer"
+          onClick={() => navigate("/?form=new")}
         >
           New Bookmark
         </button>
@@ -33,14 +36,14 @@ export default function Header({ newForm, onSearch, onExport }) {
       <hr className="my-6 border border-dark-ui-3 w-full" />
       {/* Export, NewForm e Mudar tema (não adicionado) para a versão mobile */}
       <div
-        className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#1a1a1a] border-t
-          border-dark-ui-3 z-50 flex items-center justify-between px-6"
+        className="md:hidden right-0 bottom-0 left-0 z-50 fixed flex justify-between items-center
+          bg-[#1a1a1a] px-6 border-dark-ui-3 border-t h-16"
       >
         {/* Botão de exportar */}
         <button
           onClick={onExport}
-          className=" hover:bg-dark-ui-3 w-12 h-12 flex items-center justify-center
-            rounded-xl text-gray-300 active:scale-95 transition-all text-xl"
+          className="flex justify-center items-center hover:bg-dark-ui-3 rounded-xl w-12 h-12
+            text-gray-300 text-xl active:scale-95 transition-all"
         >
           <FontAwesomeIcon icon={faFileExport} />
         </button>
@@ -48,8 +51,8 @@ export default function Header({ newForm, onSearch, onExport }) {
         {/* Botão de adicionar Form no mobile */}
         <button
           onClick={newForm}
-          className="bg-dark-ye text-dark-bg-2 w-12 h-12 rounded-xl text-3xl font-normal flex
-            items-center justify-center active:scale-95 transition-all pb-1"
+          className="flex justify-center items-center bg-dark-ye pb-1 rounded-xl w-12 h-12
+            font-normal text-dark-bg-2 text-3xl active:scale-95 transition-all"
         >
           +
         </button>

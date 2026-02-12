@@ -1,13 +1,16 @@
 import { useLockBodyScroll } from "react-use"
 import { useEffect } from "react"
+import { useNavigate } from "react-router"
 
-export default function DeletionPopup({ onConfirm, onCancel }) {
+export default function DeletionPopup({ onConfirm }) {
   useLockBodyScroll()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.key === "Escape") {
-        onCancel()
+        navigate("/")
       }
     }
 
@@ -16,11 +19,11 @@ export default function DeletionPopup({ onConfirm, onCancel }) {
     return () => {
       document.removeEventListener("keydown", handleEscapeKey)
     }
-  }, [onCancel])
+  }, [navigate])
 
   return (
     <div className="top-0 fixed flex justify-center">
-      <div className="backdrop-brightness-90 w-screen h-screen" onClick={onCancel}></div>
+      <div className="backdrop-brightness-90 w-screen h-screen" onClick={() => navigate("/")}></div>
       <div
         className="top-18 absolute flex flex-col justify-center items-center bg-dark-ui mx-auto p-6
           border-2 sm:border-dark-ui-3 rounded-2xl"
@@ -38,7 +41,7 @@ export default function DeletionPopup({ onConfirm, onCancel }) {
           <button
             className="bg-dark-bg-2 hover:bg-dark-ui-2 shadow px-12 py-2 rounded-2xl duration-200
               ease-in-out"
-            onClick={onCancel}
+            onClick={() => navigate("/")}
           >
             Não
           </button>
