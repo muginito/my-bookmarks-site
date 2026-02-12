@@ -5,8 +5,9 @@ import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import parse from "node-html-parser"
+import { useNavigate } from "react-router"
 
-export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
+export default function BookmarkForm({ initialData, mode, onSubmit }) {
   const { register, handleSubmit, reset, control } = useForm({
     defaultValues:
       mode === "edit" && initialData
@@ -26,6 +27,8 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
           },
   })
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     if (mode === "edit" && initialData) {
       reset(initialData)
@@ -42,8 +45,8 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
 
   const handleClose = useCallback(() => {
     reset()
-    onClose()
-  }, [reset, onClose])
+    navigate("/")
+  }, [reset, navigate])
 
   useEffect(() => {
     function handleEscapeKey(event) {
@@ -113,22 +116,10 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
     }
   }, [url, mode, register, reset])
 
-  // const watchedValue = useWatch(  // const watchedValue = useWatch({
-  //   name: "url",
-  //   compute:
-  //     mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
-  //   control,
-  // }){
-  //   name: "url",
-  //   compute:
-  //     mode == "edit" ? undefined : debounce((url) => (url ? fetchUrlMetaData(url) : ""), 500),
-  //   control,
-  // })
-
   function handleFormSubmit(data) {
     onSubmit(data)
     reset()
-    onClose()
+    navigate("/")
   }
 
   useLockBodyScroll()
@@ -138,8 +129,7 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
         className="absolute flex flex-col bg-dark-ui sm:my-20 p-8 sm:p-10 sm:border-2
-          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]
-          overflow-y-auto"
+          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]"
       >
         <FontAwesomeIcon
           icon={faX}
@@ -147,7 +137,7 @@ export default function BookmarkForm({ initialData, mode, onSubmit, onClose }) {
           className="relative hover:bg-dark-ui-3 p-2 rounded-full text-base-500 text-lg
             -translate-2.5 duration-150"
         />
-        <div className="flex flex-col gap-4 mb-4">
+        <div className="flex flex-col gap-2 sm:gap-4 mb-4">
           <input
             type="text"
             placeholder="Fonte/Link"

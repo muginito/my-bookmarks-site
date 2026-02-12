@@ -7,12 +7,16 @@ import Header from "./components/Header.jsx"
 import Fuse from "fuse.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFileExport } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate, useSearchParams } from "react-router"
 
 function App() {
-  const [isFormOpen, setIsFormOpen] = useState(false)
   const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
-  const [selectedBookmark, setSelectedBookmark] = useState(null)
-  const [delConfirm, setDelConfirm] = useState({ show: false, id: null })
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const formMode = searchParams.get("form") // "new" ou "edit"
+  const editId = searchParams.get("id") // id do bookmark a ser editado
+  const deleteId = searchParams.get("delete") // id do bookmark a ser deletado
 
   // configuração do Fuse.js (busca)
   const [search, setSearch] = useState("")
@@ -23,21 +27,6 @@ function App() {
   const fuse = new Fuse(bookmarks, optionFuse)
   // logica de filtragem, se a lista tiver vazia ele mostra a lista toda
   const searchResult = search ? fuse.search(search).map((res) => res.item) : bookmarks
-
-  // Open New Form
-  function handleOpenNewForm() {
-    setSelectedBookmark(null)
-    setIsFormOpen(true)
-  }
-
-  // Open Edit Form
-  function handleOpenEditForm(id) {
-    const bookmark = bookmarks.find((b) => b.id === id)
-    if (bookmark) {
-      setSelectedBookmark(bookmark)
-      setIsFormOpen(true)
-    }
-  }
 
   // Add Bookmark
   function handleAddBookmark(data) {
@@ -55,53 +44,28 @@ function App() {
 
   // Edit Bookmark
   function handleEditBookmark(data) {
-    setBookmarks(bookmarks.map((b) => (b.id === selectedBookmark.id ? { ...b, ...data } : b)))
-  }
-
-  // Close Form
-  function handleCloseForm() {
-    setIsFormOpen(false)
-    setSelectedBookmark(null)
+    setBookmarks(bookmarks.map((b) => (String(b.id) === editId ? { ...b, ...data } : b)))
+    navigate("/")
   }
 
   // Delete Bookmark
   function handleDeleteBookmark(id) {
-    if (delConfirm.show && delConfirm.id) {
-      const delBookmark = bookmarks.filter((b) => b.id !== id)
-      setBookmarks(delBookmark)
-      setDelConfirm({ show: false, id: null })
-    } else {
-      setDelConfirm({ show: true, id: id })
-    }
-  }
-  // function handleDeleteBookmark(id) {
-  //   const delBookmark = bookmarks.filter((b) => b.id !== id)
-  //   setBookmarks(delBookmark)
-  // }
-
-  function showDeleteToast() {
-    return (
-      delConfirm.show && (
-        <DeletionPopup
-          onConfirm={() => handleDeleteBookmark(delConfirm.id)}
-          onCancel={() => setDelConfirm({ show: false, id: null })}
-        />
-      )
-    )
+    const delBookmark = bookmarks.filter((b) => String(b.id) !== id)
+    setBookmarks(delBookmark)
+    navigate("/")
   }
 
-  function showForm() {
-    return (
-      isFormOpen && (
-        <BookmarkForm
-          initialData={selectedBookmark}
-          mode={selectedBookmark ? "edit" : "new"}
-          onSubmit={selectedBookmark ? handleEditBookmark : handleAddBookmark}
-          onClose={handleCloseForm}
-        />
-      )
-    )
-  }
+  const showDeletePopup = deleteId ? (
+    <DeletionPopup onConfirm={() => handleDeleteBookmark(deleteId)} />
+  ) : null
+
+  const showForm = formMode ? (
+    <BookmarkForm
+      initialData={editId ? bookmarks.find((b) => String(b.id) === editId) : null}
+      mode={formMode}
+      onSubmit={formMode === "edit" ? handleEditBookmark : handleAddBookmark}
+    />
+  ) : null
 
   function exportBookmarks() {
     const dataStr = JSON.stringify(bookmarks, null, 2)
@@ -116,6 +80,7 @@ function App() {
     URL.revokeObjectURL(url)
   }
 
+  // eslint-disable-next-line no-unused-vars
   function importBookmarks(event) {
     const file = event.target.files[0]
     if (file) {
@@ -141,14 +106,10 @@ function App() {
           hover:text-base-700 sm:text-2xl active:scale-95 duration-200 cursor-pointer"
         onClick={exportBookmarks}
       />
-      <Header newForm={handleOpenNewForm} onSearch={setSearch} />
-      <BookmarkList
-        bookmarks={searchResult}
-        onDelete={handleDeleteBookmark}
-        onEdit={handleOpenEditForm}
-      />
-      {showDeleteToast()}
-      {showForm()}
+      <Header onSearch={setSearch} />
+      <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
+      {showDeletePopup}
+      {showForm}
     </>
   )
 }

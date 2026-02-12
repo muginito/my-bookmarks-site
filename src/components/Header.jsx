@@ -1,9 +1,12 @@
 import InputBar from "./InputBar"
+import { useNavigate } from "react-router"
 
-export default function Header({ newForm, onSearch }) {
+export default function Header({ onSearch }) {
+  const navigate = useNavigate()
+
   // Coloquei a função de busca do App
   return (
-    <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-[900px]">
+    <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-225">
       <h1
         className="my-12 md:my-24 w-full font-heading font-bold text-yellow-400 text-3xl md:text-6xl
           text-center"
@@ -23,7 +26,7 @@ export default function Header({ newForm, onSearch }) {
         <button
           className="bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit font-bold text-dark-bg-2
             text-sm md:text-base whitespace-nowrap active:scale-95 cursor-pointer"
-          onClick={newForm}
+          onClick={() => navigate("/?form=new")}
         >
           New Bookmark
         </button>
