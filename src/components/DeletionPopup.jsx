@@ -2,7 +2,7 @@ import { useLockBodyScroll } from "react-use"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 
-export default function DeletionPopup({ onConfirm }) {
+export default function DeletionPopup({ onConfirm, children }) {
   useLockBodyScroll()
 
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ export default function DeletionPopup({ onConfirm }) {
           border-2 sm:border-dark-ui-3 rounded-2xl"
       >
         <h1 className="p-2">Confirme</h1>
-        <p className="p-4">Tem certeza que deseja deletar este bookmark?</p>
+        <p className="p-4">{children}</p>
         <div className="flex justify-around mt-4 w-full">
           <button
             className="bg-dark-bg-2 hover:bg-red-600 shadow px-12 py-2 rounded-2xl duration-200

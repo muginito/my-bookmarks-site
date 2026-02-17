@@ -29,7 +29,7 @@ export default function Header({ onSearch }) {
             text-dark-bg-2 text-sm md:text-base whitespace-nowrap active:scale-95 cursor-pointer"
           onClick={() => navigate("/?form=new")}
         >
-          New Bookmark
+          Novo Bookmark
         </button>
       </div>
       <hr className="my-6 border border-dark-ui-3 w-full" />

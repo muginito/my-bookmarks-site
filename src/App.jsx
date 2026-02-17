@@ -58,9 +58,16 @@ function App() {
     navigate("/")
   }
 
-  const showDeletePopup = deleteId ? (
-    <DeletionPopup onConfirm={() => handleDeleteBookmark(deleteId)} />
-  ) : null
+  const showDeletePopup =
+    deleteId === "all" ? (
+      <DeletionPopup onConfirm={deleteAllBookmarks}>
+        Tem certeza que deseja deletar todos os bookmarks?
+      </DeletionPopup>
+    ) : deleteId ? (
+      <DeletionPopup onConfirm={() => handleDeleteBookmark(deleteId)}>
+        Tem certeza que deseja deletar este bookmark?
+      </DeletionPopup>
+    ) : null
 
   const showForm = formMode ? (
     <BookmarkForm
@@ -104,6 +111,7 @@ function App() {
 
   function deleteAllBookmarks() {
     setBookmarks([])
+    navigate("/")
   }
 
   /* A seguir, vou explicar o que eu fiz com o botão de export:

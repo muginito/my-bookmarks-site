@@ -35,7 +35,7 @@ export default function BookmarkList({ bookmarks }) {
         ))}
         {Object.keys(bookmarks).length > itemsPerPage && (
           <>
-            <hr className="my-10 border border-dark-ui-3 w-32 sm:w-2xs" />
+            <hr className="my-2 border border-dark-ui-3 w-32 sm:w-2xs" />
             <div className="flex justify-center items-center gap-8 pb-4">
               <Button
                 disabled={currentPage === 1}
