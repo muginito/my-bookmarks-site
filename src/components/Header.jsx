@@ -1,9 +1,8 @@
 import InputBar from "./InputBar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFileExport } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router"
 
-export default function Header({ onSearch, onExport }) {
+export default function Header({ onSearch }) {
   const navigate = useNavigate()
 
   // Coloquei a função de busca do App
@@ -34,32 +33,6 @@ export default function Header({ onSearch, onExport }) {
         </button>
       </div>
       <hr className="my-6 border border-dark-ui-3 w-full" />
-      {/* Export, NewForm e Mudar tema (não adicionado) para a versão mobile */}
-      <div
-        className="md:hidden right-0 bottom-0 left-0 z-50 fixed flex justify-between items-center
-          bg-[#1a1a1a] px-6 border-dark-ui-3 border-t h-16"
-      >
-        {/* Botão de exportar */}
-        <button
-          onClick={onExport}
-          className="flex justify-center items-center hover:bg-dark-ui-3 rounded-xl w-12 h-12
-            text-gray-300 text-xl active:scale-95 transition-all"
-        >
-          <FontAwesomeIcon icon={faFileExport} />
-        </button>
-
-        {/* Botão de adicionar Form no mobile */}
-        <button
-          onClick={newForm}
-          className="flex justify-center items-center bg-dark-ye pb-1 rounded-xl w-12 h-12
-            font-normal text-dark-bg-2 text-3xl active:scale-95 transition-all"
-        >
-          +
-        </button>
-
-        {/* Coloquei um espaçador invisivel pro botão "+" ficar no centro */}
-        <div className="w-12 pointer-events-none"></div>
-      </div>
     </header>
   )
 }

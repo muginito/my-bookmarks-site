@@ -4,10 +4,13 @@ import BookmarkList from "./components/BookmarkList.jsx"
 import BookmarkForm from "./components/BookmarkForm.jsx"
 import DeletionPopup from "./components/DeletionPopup.jsx"
 import Header from "./components/Header.jsx"
+import MobileBar from "./components/MobileBar.jsx"
 import Fuse from "fuse.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFileExport } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, useSearchParams } from "react-router"
+import ImportButton from "./components/ImportButton.jsx"
+import Button from "./components/Button.jsx"
 
 function App() {
   const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
@@ -80,14 +83,14 @@ function App() {
     URL.revokeObjectURL(url)
   }
 
-  // eslint-disable-next-line no-unused-vars
   function importBookmarks(event) {
-    const file = event.target.files[0]
-    if (file) {
+    const fileInput = event.target.files[0]
+    console.log(fileInput)
+    if (fileInput) {
       const reader = new FileReader()
-      reader.onload = (e) => {
+      reader.onload = () => {
         try {
-          const importedBookmarks = JSON.parse(e.target.result)
+          const importedBookmarks = JSON.parse(reader.result)
           if (Array.isArray(importedBookmarks)) {
             setBookmarks(importedBookmarks)
           }
@@ -95,7 +98,12 @@ function App() {
           console.error("Erro ao importar bookmarks:", error)
         }
       }
+      reader.readAsText(fileInput)
     }
+  }
+
+  function deleteAllBookmarks() {
+    setBookmarks([])
   }
 
   /* A seguir, vou explicar o que eu fiz com o botão de export:
@@ -114,8 +122,11 @@ function App() {
             cursor-pointer"
         />
       </button>
+      <ImportButton onImport={importBookmarks} />
+      <Button onClick={deleteAllBookmarks}>Delete All</Button>
       <Header onSearch={setSearch} />
       <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
+      <MobileBar onExport={exportBookmarks} onImport={importBookmarks} />
       {showDeletePopup}
       {showForm}
     </>
