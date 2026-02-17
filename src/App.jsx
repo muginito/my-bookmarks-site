@@ -133,15 +133,22 @@ function App() {
     }
   }
 
+/* A seguir, vou explicar o que eu fiz com o botão de export:
+  Eu não estava conseguindo dar hidden no icone do export para o mobile, aparentemente o Font injeta o SVG direto no html
+  ai eu não conseguia dar hidden md:block pelo tailwind (ele não estava aceitando), então eu embrulhei ele em uma tag padrão do HTML
+  assim quando o botão some, o icone tem que ir junto */
   return (
     <>
+      <button
+        onClick={exportBookmarks}
+        className="hidden md:block absolute top-8 right-8 active:scale-95 duration-200"
+      >
       <FontAwesomeIcon
         icon={faFileExport}
-        className="top-8 right-8 absolute text-dark-ui sm:text-dark-ui-2 text-base
-          hover:text-base-700 sm:text-2xl active:scale-95 duration-200 cursor-pointer"
-        onClick={exportBookmarks}
+        className="text-dark-ui sm:text-dark-ui-2 text-base hover:text-base-700 sm:text-2xl cursor-pointer"
       />
-      <Header newForm={handleOpenNewForm} onSearch={setSearch} />
+      </button>
+      <Header newForm={handleOpenNewForm} onSearch={setSearch} onExport={exportBookmarks} />
       <BookmarkList
         bookmarks={searchResult}
         onDelete={handleDeleteBookmark}
