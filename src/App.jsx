@@ -4,15 +4,22 @@ import BookmarkList from "./components/BookmarkList.jsx"
 import BookmarkForm from "./components/BookmarkForm.jsx"
 import DeletionPopup from "./components/DeletionPopup.jsx"
 import Header from "./components/Header.jsx"
+import MobileBar from "./components/MobileBar.jsx"
 import Fuse from "fuse.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFileExport } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate, useSearchParams } from "react-router"
+import ImportButton from "./components/ImportButton.jsx"
+import Button from "./components/Button.jsx"
 
 function App() {
-  const [isFormOpen, setIsFormOpen] = useState(false)
   const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
-  const [selectedBookmark, setSelectedBookmark] = useState(null)
-  const [delConfirm, setDelConfirm] = useState({ show: false, id: null })
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const formMode = searchParams.get("form") // "new" ou "edit"
+  const editId = searchParams.get("id") // id do bookmark a ser editado
+  const deleteId = searchParams.get("delete") // id do bookmark a ser deletado
 
   // configuração do Fuse.js (busca)
   const [search, setSearch] = useState("")
@@ -23,21 +30,6 @@ function App() {
   const fuse = new Fuse(bookmarks, optionFuse)
   // logica de filtragem, se a lista tiver vazia ele mostra a lista toda
   const searchResult = search ? fuse.search(search).map((res) => res.item) : bookmarks
-
-  // Open New Form
-  function handleOpenNewForm() {
-    setSelectedBookmark(null)
-    setIsFormOpen(true)
-  }
-
-  // Open Edit Form
-  function handleOpenEditForm(id) {
-    const bookmark = bookmarks.find((b) => b.id === id)
-    if (bookmark) {
-      setSelectedBookmark(bookmark)
-      setIsFormOpen(true)
-    }
-  }
 
   // Add Bookmark
   function handleAddBookmark(data) {
@@ -55,53 +47,28 @@ function App() {
 
   // Edit Bookmark
   function handleEditBookmark(data) {
-    setBookmarks(bookmarks.map((b) => (b.id === selectedBookmark.id ? { ...b, ...data } : b)))
-  }
-
-  // Close Form
-  function handleCloseForm() {
-    setIsFormOpen(false)
-    setSelectedBookmark(null)
+    setBookmarks(bookmarks.map((b) => (String(b.id) === editId ? { ...b, ...data } : b)))
+    navigate("/")
   }
 
   // Delete Bookmark
   function handleDeleteBookmark(id) {
-    if (delConfirm.show && delConfirm.id) {
-      const delBookmark = bookmarks.filter((b) => b.id !== id)
-      setBookmarks(delBookmark)
-      setDelConfirm({ show: false, id: null })
-    } else {
-      setDelConfirm({ show: true, id: id })
-    }
-  }
-  // function handleDeleteBookmark(id) {
-  //   const delBookmark = bookmarks.filter((b) => b.id !== id)
-  //   setBookmarks(delBookmark)
-  // }
-
-  function showDeleteToast() {
-    return (
-      delConfirm.show && (
-        <DeletionPopup
-          onConfirm={() => handleDeleteBookmark(delConfirm.id)}
-          onCancel={() => setDelConfirm({ show: false, id: null })}
-        />
-      )
-    )
+    const delBookmark = bookmarks.filter((b) => String(b.id) !== id)
+    setBookmarks(delBookmark)
+    navigate("/")
   }
 
-  function showForm() {
-    return (
-      isFormOpen && (
-        <BookmarkForm
-          initialData={selectedBookmark}
-          mode={selectedBookmark ? "edit" : "new"}
-          onSubmit={selectedBookmark ? handleEditBookmark : handleAddBookmark}
-          onClose={handleCloseForm}
-        />
-      )
-    )
-  }
+  const showDeletePopup = deleteId ? (
+    <DeletionPopup onConfirm={() => handleDeleteBookmark(deleteId)} />
+  ) : null
+
+  const showForm = formMode ? (
+    <BookmarkForm
+      initialData={editId ? bookmarks.find((b) => String(b.id) === editId) : null}
+      mode={formMode}
+      onSubmit={formMode === "edit" ? handleEditBookmark : handleAddBookmark}
+    />
+  ) : null
 
   function exportBookmarks() {
     const dataStr = JSON.stringify(bookmarks, null, 2)
@@ -117,12 +84,13 @@ function App() {
   }
 
   function importBookmarks(event) {
-    const file = event.target.files[0]
-    if (file) {
+    const fileInput = event.target.files[0]
+    console.log(fileInput)
+    if (fileInput) {
       const reader = new FileReader()
-      reader.onload = (e) => {
+      reader.onload = () => {
         try {
-          const importedBookmarks = JSON.parse(e.target.result)
+          const importedBookmarks = JSON.parse(reader.result)
           if (Array.isArray(importedBookmarks)) {
             setBookmarks(importedBookmarks)
           }
@@ -130,10 +98,15 @@ function App() {
           console.error("Erro ao importar bookmarks:", error)
         }
       }
+      reader.readAsText(fileInput)
     }
   }
 
-/* A seguir, vou explicar o que eu fiz com o botão de export:
+  function deleteAllBookmarks() {
+    setBookmarks([])
+  }
+
+  /* A seguir, vou explicar o que eu fiz com o botão de export:
   Eu não estava conseguindo dar hidden no icone do export para o mobile, aparentemente o Font injeta o SVG direto no html
   ai eu não conseguia dar hidden md:block pelo tailwind (ele não estava aceitando), então eu embrulhei ele em uma tag padrão do HTML
   assim quando o botão some, o icone tem que ir junto */
@@ -141,21 +114,21 @@ function App() {
     <>
       <button
         onClick={exportBookmarks}
-        className="hidden md:block absolute top-8 right-8 active:scale-95 duration-200"
+        className="hidden md:block top-8 right-8 absolute active:scale-95 duration-200"
       >
-      <FontAwesomeIcon
-        icon={faFileExport}
-        className="text-dark-ui sm:text-dark-ui-2 text-base hover:text-base-700 sm:text-2xl cursor-pointer"
-      />
+        <FontAwesomeIcon
+          icon={faFileExport}
+          className="text-dark-ui sm:text-dark-ui-2 text-base hover:text-base-700 sm:text-2xl
+            cursor-pointer"
+        />
       </button>
-      <Header newForm={handleOpenNewForm} onSearch={setSearch} onExport={exportBookmarks} />
-      <BookmarkList
-        bookmarks={searchResult}
-        onDelete={handleDeleteBookmark}
-        onEdit={handleOpenEditForm}
-      />
-      {showDeleteToast()}
-      {showForm()}
+      <ImportButton onImport={importBookmarks} />
+      <Button onClick={deleteAllBookmarks}>Delete All</Button>
+      <Header onSearch={setSearch} />
+      <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
+      <MobileBar onExport={exportBookmarks} onImport={importBookmarks} />
+      {showDeletePopup}
+      {showForm}
     </>
   )
 }

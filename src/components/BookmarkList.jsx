@@ -3,8 +3,11 @@ import BookmarkItem from "./BookmarkItem"
 import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate } from "react-router"
 
-export default function BookmarkList({ bookmarks, onDelete, onEdit }) {
+export default function BookmarkList({ bookmarks }) {
+  const navigate = useNavigate()
+
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
@@ -26,8 +29,8 @@ export default function BookmarkList({ bookmarks, onDelete, onEdit }) {
             date={bookmark.date}
             url={bookmark.url}
             tags={bookmark.tags}
-            onDelete={onDelete}
-            onEdit={onEdit}
+            onDelete={() => navigate(`/?delete=${bookmark.id}`)}
+            onEdit={() => navigate(`/?form=edit&id=${bookmark.id}`)}
           />
         ))}
         {Object.keys(bookmarks).length > itemsPerPage && (
