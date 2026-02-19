@@ -1,12 +1,28 @@
 import { faBars, faFileExport, faFileImport } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion } from "framer-motion"
+import { useEffect } from "react"
 
 export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen }) {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      const menu = document.getElementById("dropdownToggle")
+      if (menu && !menu.contains(event.target)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [setIsMenuOpen])
+
   return (
     <div className="relative flex justify-center items-center w-12 h-12">
       {/* Botão que abre e fecha o menu */}
       <button
+        id="dropdownToggle"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className={`flex justify-center items-center rounded-xl w-full h-full text-xl
           active:scale-95 transition-all focus:outline-none min-w-12
