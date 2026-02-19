@@ -6,14 +6,13 @@ import DeletionPopup from "./components/DeletionPopup.jsx"
 import Header from "./components/Header.jsx"
 import MobileBar from "./components/MobileBar.jsx"
 import Fuse from "fuse.js"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFileExport } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, useSearchParams } from "react-router"
-import ImportButton from "./components/ImportButton.jsx"
-import Button from "./components/Button.jsx"
+import DropDown from "./components/DropDown.jsx"
 
 function App() {
   const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
+  //Menu Dropdown
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
@@ -120,19 +119,22 @@ function App() {
   assim quando o botão some, o icone tem que ir junto */
   return (
     <>
-      <button
-        onClick={exportBookmarks}
-        className="hidden md:block top-8 right-8 absolute active:scale-95 duration-200"
+      <h1
+        className="mt-8 mb-12 md:mb-18 w-full font-heading font-bold text-yellow-400 text-3xl
+          md:text-5xl text-center"
       >
-        <FontAwesomeIcon
-          icon={faFileExport}
-          className="text-dark-ui sm:text-dark-ui-2 text-base hover:text-base-700 sm:text-2xl
-            cursor-pointer"
-        />
-      </button>
-      <Header onSearch={setSearch} />
+        Meus Bookmarks
+      </h1>
+      <Header
+        onSearch={setSearch}
+        onExport={exportBookmarks}
+        onImport={importBookmarks}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+      <hr className="mx-auto my-6 border border-dark-ui-3 w-[75%]" />
       <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
-      <MobileBar onExport={exportBookmarks} onImport={importBookmarks} />
+      <MobileBar />
       {showDeletePopup}
       {showForm}
     </>
