@@ -124,12 +124,12 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
 
   useLockBodyScroll()
   return (
-    <div className="top-0 fixed flex justify-center w-screen h-screen">
+    <div className="top-0 fixed flex justify-center sm:items-center w-screen h-screen">
       <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleClose}></div>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="absolute flex flex-col bg-dark-ui sm:my-20 p-8 sm:p-10 sm:border-2
-          sm:border-dark-ui-3 sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-screen sm:h-[82dvh]"
+        className="absolute flex flex-col bg-dark-ui p-8 sm:p-10 sm:border-2 sm:border-dark-ui-3
+          sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-dvh sm:max-h-[90dvh]"
       >
         <FontAwesomeIcon
           icon={faX}
@@ -171,14 +171,14 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
         <textarea
           type="text"
           placeholder="Escreva algo..."
-          className="mt-4 mb-8 focus:outline-0 min-h-50 text-sm resize-none grow"
+          className="mt-4 mb-8 focus:outline-0 w-full text-sm resize-none grow"
           {...register("description", { required: true })}
         />
         <Button
           type="submit"
-          className="bg-dark-ui light:bg-light-ui sm:m-auto mb-10 px-5 py-2.5 border
-            border-transparent hover:border-yellow-400 rounded-lg text-base transition-colors
-            duration-250 cursor-pointer"
+          className="bg-dark-ui mt-auto px-5 py-2.5 border border-transparent
+            hover:border-yellow-400 rounded-lg text-base transition-colors duration-250
+            cursor-pointer shrink-0"
         >
           {initialData?.id ? "Salvar alterações" : "Salvar"}
         </Button>
