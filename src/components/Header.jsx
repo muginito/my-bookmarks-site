@@ -1,25 +1,26 @@
 import InputBar from "./InputBar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router"
+import DropDown from "./DropDown"
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch, onExport, onImport, isMenuOpen, setIsMenuOpen }) {
   const navigate = useNavigate()
 
   // Coloquei a função de busca do App
   return (
     <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-225">
-      <h1
-        className="my-12 md:my-24 w-full font-heading font-bold text-yellow-400 text-3xl md:text-6xl
-          text-center"
-      >
-        Meus Bookmarks
-      </h1>
       <div className="flex gap-4 w-full">
+        <DropDown
+          onExport={onExport}
+          onImport={onImport}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+        />
         {/* <InputBar id="url" type="text" placeholder="Paste URL" /> */}
         <InputBar
           id="search"
           type="search"
-          placeholder="Search..."
+          placeholder="Buscar"
           // className="md:font-normal text-sm md:text-base"
           onChange={(e) => onSearch(e.target.value)}
           // Depois que o usuario digita algo, é enviado para o app atualizar o estado
@@ -32,7 +33,6 @@ export default function Header({ onSearch }) {
           Novo Bookmark
         </button>
       </div>
-      <hr className="my-6 border border-dark-ui-3 w-full" />
     </header>
   )
 }
