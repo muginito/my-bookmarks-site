@@ -122,8 +122,6 @@ function App() {
             cursor-pointer"
         />
       </button>
-      <ImportButton onImport={importBookmarks} />
-      <Button onClick={deleteAllBookmarks}>Delete All</Button>
       <Header onSearch={setSearch} />
       <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
       <MobileBar onExport={exportBookmarks} onImport={importBookmarks} />
@@ -134,3 +132,5 @@ function App() {
 }
 
 export default App
+// <ImportButton onImport={importBookmarks} />
+// <Button onClick={deleteAllBookmarks}>Delete All</Button>

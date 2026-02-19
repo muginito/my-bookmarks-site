@@ -1,4 +1,4 @@
-import { faFileExport, faFileImport, faSquarePlus } from "@fortawesome/free-solid-svg-icons"
+import { faFileExport, faFileImport, faSquarePlus, faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router"
 import { useState } from "react"
@@ -9,6 +9,8 @@ export default function MobileBar({ onExport, onImport }) {
   const navigate = useNavigate()
   const [isHidden, setIsHidden] = useState(false)
   const { scrollY } = useScroll()
+  //Menu Dropdown
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious()
@@ -59,8 +61,32 @@ export default function MobileBar({ onExport, onImport }) {
         <FontAwesomeIcon icon={faSquarePlus} />
       </button>
 
-      {/* Coloquei um espaçador invisivel pro botão "+" ficar no centro */}
-      <div className="w-12 pointer-events-none"></div>
+      {/* Botão do MenuDropdown */}
+      <div className="relative flex justify-center items-center w-12 h-12">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className={`flex justify-center items-center rounded-xl w-full h-full text-xl
+            active:scale-95 transition-all focus:outline-none
+            ${isMenuOpen ? "bg-dark-ui-3 text-white" : "text-dark-ui-2 hover:bg-dark-ui-3"}`}
+        >
+          <FontAwesomeIcon icon={faBars} />
+          <motion.div
+            variants={{
+              open: { opacity: 1, y: 0, pointerEvents: "auto", scale: 1 },
+              closed: { opacity: 0, y: 10, pointerEvents: "none", scale: 0.95 },
+            }}
+            initial="closed"
+            animate={isMenuOpen ? "open" : "closed"}
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-16 right-0 bg-[#1a1a1a] border border-dark-ui-3 rounded-xl
+              p-3 w-48 shadow-2xl flex flex-col gap-2 origin-bottom-right"
+          >
+            <p className="text-dark-ui-2 text-sm text-center py-2 italic cursor-default">
+              Aqui é onde a gente coloca os botões
+            </p>
+          </motion.div>
+        </button>
+      </div>
     </motion.div>
   )
 }
