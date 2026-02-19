@@ -80,51 +80,39 @@
   --link-color: #4385be;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  /* Fallback for browsers that do not support ::-webkit-scrollbar */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-base-700) var(--color-dark-bg-2);
+  }
+}
+
 /* Custom Scrollbar Styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--color-dark-bg-2);
+  transition: background 0.3s ease;
+  border-radius: 100vw;
+  margin-block: 0.5em;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-base-700);
-  border-radius: 4px;
+  background: var(--color-dark-ui-3);
+  border: 3px solid var(--color-dark-bg-2);
+  border-radius: 100vw;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-yellow-400);
-  transition: background 0.3s ease;
 }
-
-/* Firefox scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-base-700) var(--color-dark-bg-2);
-}
-
-html {
-  overflow: overlay;
-}
-
-/* body { */
-/*   font-family: Inter, sans-serif; */
-/*   -webkit-font-smoothing: antialiased; */
-/*   line-height: 1.5; */
-/*   background-color: var(--primary-bg-color); */
-/*   color: var(--font-color-1); */
-/* } */
-
-/* header { */
-/*   margin: auto; */
-/*   width: 75%; */
-/*   max-width: 900px; */
-/*   display: flex; */
-/*   flex-direction: column; */
-/*   align-items: center; */
-/* } */
 
 #page-title {
   font-family: "Montserrat", sans-serif;
