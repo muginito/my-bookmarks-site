@@ -124,7 +124,7 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
 
   useLockBodyScroll()
   return (
-    <div className="top-0 fixed flex justify-center sm:items-center w-screen h-screen">
+    <div className="top-0 z-50 fixed flex justify-center sm:items-center w-screen h-screen">
       <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleClose}></div>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
