@@ -2,19 +2,22 @@ import { faBars, faFileExport, faFileImport, faTrash } from "@fortawesome/free-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion } from "framer-motion"
 import { useEffect } from "react"
+import { useNavigate } from "react-router"
 
-export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen, onDeleteAll }) {
+export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen }) {
+  const navigate = useNavigate()
+
   useEffect(() => {
     function handleClickOutside(event) {
       const menu = document.getElementById("dropdownToggle")
       if (menu && !menu.contains(event.target)) {
-        setIsMenuOpen(false)
+        setTimeout(() => setIsMenuOpen(false), 100)
       }
     }
 
-    document.addEventListener("mousedown", () => setTimeout(handleClickOutside, 100))
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", () => setTimeout(handleClickOutside, 100))
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [setIsMenuOpen])
 
@@ -26,7 +29,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className={`flex justify-center items-center rounded-xl w-full h-full text-xl
           active:scale-95 transition-all focus:outline-none min-w-12
-          ${isMenuOpen ? "bg-dark-ui-3 text-white" : "text-dark-ui-2 hover:bg-dark-ui-3"}`}
+          ${isMenuOpen ? "bg-dark-ui-2 text-white" : "text-dark-ui-2 hover:text-dark-tx-2 hover:bg-dark-ui-3"}`}
       >
         <FontAwesomeIcon icon={faBars} />
       </button>
@@ -46,10 +49,10 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         <button
           onClick={() => {
             if (onExport) onExport()
-            setIsMenuOpen(false) // Fecha o menu ao clicar
+            setIsMenuOpen(false)
           }}
           className="flex items-center gap-3 hover:bg-dark-ui-3 p-3 rounded-lg outline-none w-full
-            text-gray-200 hover:text-darks text-left transition-all cursor-pointer"
+            hover:text-white text-left transition-all cursor-pointer"
         >
           <FontAwesomeIcon icon={faFileExport} className="w-5" />
           <span className="font-medium text-sm">Exportar</span>
@@ -61,7 +64,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
           id="importFile"
           onChange={(e) => {
             if (onImport) onImport(e)
-            setIsMenuOpen(false) // Fecha o menu ao selecionar
+            setIsMenuOpen(false)
           }}
           multiple={false}
           className="hidden"
@@ -69,7 +72,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         <label
           htmlFor="importFile"
           className="flex items-center gap-3 hover:bg-dark-ui-3 m-0 p-3 rounded-lg outline-none
-            w-full text-gray-200 hover:text-white text-left transition-all cursor-pointer"
+            w-full hover:text-white text-left transition-all cursor-pointer"
         >
           <FontAwesomeIcon icon={faFileImport} className="w-5" />
           <span className="font-medium text-sm">Importar</span>
@@ -77,13 +80,12 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         {/* Opção de Deletar Tudo */}
         <button
           onClick={() => {
-            if (onDeleteAll) onDeleteAll()
-            setIsMenuOpen(false) // Fecha o menu ao clicar
+            navigate(`/?delete=all`)
+            setIsMenuOpen(false)
           }}
           className="flex items-center gap-3 hover:bg-red-500/10 p-3 rounded-lg outline-none w-full
-            text-gray-200 hover:text-red-500 text-left transition-all cursor-pointer"
+            hover:text-red-500 text-left transition-all cursor-pointer"
         >
-          {/* Se você tiver o faTrash importado do FontAwesome, use-o aqui: */}
           <FontAwesomeIcon icon={faTrash} className="w-5" />
           <span className="font-medium text-sm">Deletar Tudo</span>
         </button>
