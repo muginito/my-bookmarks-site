@@ -39,8 +39,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         initial="closed"
         animate={isMenuOpen ? "open" : "closed"}
         transition={{ duration: 0.2 }}
-        className="right-0 top-16 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow-2xl p-2 border
-          border-dark-ui-3 rounded-xl w-48 origin-bottom-right"
+        className="top-16 right-0 z-50 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow-2xl p-2 border border-dark-ui-3 rounded-xl w-48 origin-bottom-right"
       >
         {/* Opção de export */}
         <button
@@ -48,8 +47,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
             if (onExport) onExport()
             setIsMenuOpen(false) // Fecha o menu ao clicar
           }}
-          className="flex items-center gap-3 hover:bg-dark-ui-3 p-3 rounded-lg outline-none w-full
-            text-gray-200 hover:text-white text-left transition-all"
+          className="flex items-center gap-3 hover:bg-dark-ui-3 p-3 rounded-lg outline-none w-full text-gray-200 hover:text-white text-left transition-all"
         >
           <FontAwesomeIcon icon={faFileExport} className="w-5" />
           <span className="font-medium text-sm">Exportar</span>
@@ -68,8 +66,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         />
         <label
           htmlFor="importFile"
-          className="flex items-center gap-3 hover:bg-dark-ui-3 m-0 p-3 rounded-lg outline-none
-            w-full text-gray-200 hover:text-white text-left transition-all cursor-pointer"
+          className="flex items-center gap-3 hover:bg-dark-ui-3 m-0 p-3 rounded-lg outline-none w-full text-gray-200 hover:text-white text-left transition-all cursor-pointer"
         >
           <FontAwesomeIcon icon={faFileImport} className="w-5" />
           <span className="font-medium text-sm">Importar</span>
@@ -80,8 +77,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
             if (onDeleteAll) onDeleteAll()
             setIsMenuOpen(false) // Fecha o menu ao clicar
           }}
-          className="flex items-center gap-3 hover:bg-red-500/10 p-3 rounded-lg outline-none w-full
-            text-gray-200 hover:text-red-500 text-left transition-all"
+          className="flex items-center gap-3 hover:bg-red-500/10 p-3 rounded-lg outline-none w-full text-gray-200 hover:text-red-500 text-left transition-all"
         >
           {/* Se você tiver o faTrash importado do FontAwesome, use-o aqui: */}
           <FontAwesomeIcon icon={faTrash} className="w-5" />

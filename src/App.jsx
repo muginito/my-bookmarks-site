@@ -119,13 +119,15 @@ function App() {
   assim quando o botão some, o icone tem que ir junto */
   return (
     <>
-      <div className="relative z-0 flex justify-center items-center w-full mt-8 mb-12 md:mb-18 px-6">
+      <div
+        className="z-60 relative flex justify-center items-center mt-8 mb-12 md:mb-18 px-6 w-full"
+      >
         <h1
           className="w-full font-heading font-bold text-yellow-400 text-2xl md:text-5xl text-center"
         >
           Meus Bookmarks
         </h1>
-        <div className="absolute right-6 top-1/2 -translate-y-1/2">
+        <div className="top-1/2 right-6 z-50 absolute -translate-y-1/2">
           <DropDown
             onExport={exportBookmarks}
             onImport={importBookmarks}
