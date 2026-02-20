@@ -22,7 +22,7 @@ export default function DeletionPopup({ onConfirm, children }) {
   }, [navigate])
 
   return (
-    <div className="top-0 fixed flex justify-center">
+    <div className="top-0 z-50 fixed flex justify-center">
       <div className="backdrop-brightness-90 w-screen h-screen" onClick={() => navigate("/")}></div>
       <div
         className="top-18 absolute flex flex-col justify-center items-center bg-dark-ui mx-auto p-6
@@ -33,14 +33,14 @@ export default function DeletionPopup({ onConfirm, children }) {
         <div className="flex justify-around mt-4 w-full">
           <button
             className="bg-dark-bg-2 hover:bg-red-600 shadow px-12 py-2 rounded-2xl duration-200
-              ease-in-out"
+              ease-in-out cursor-pointer"
             onClick={onConfirm}
           >
             Sim
           </button>
           <button
             className="bg-dark-bg-2 hover:bg-dark-ui-2 shadow px-12 py-2 rounded-2xl duration-200
-              ease-in-out"
+              ease-in-out cursor-pointer"
             onClick={() => navigate("/")}
           >
             Não
