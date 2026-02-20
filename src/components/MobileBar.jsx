@@ -34,7 +34,7 @@ export default function MobileBar() {
       {/*  Botão de adicionar Form (Centro) */}
       <button
         onClick={() => navigate("/?form=new")}
-        className="w-12 h-12 text-dark-ye text-6xl active:scale-95 transition-all duration-150"
+        className="w-12 h-12 text-dark-ye text-6xl active:scale-95 transition-all duration-150 flex justify center items-center my-2"
       >
         <FontAwesomeIcon icon={faSquarePlus} />
       </button>
