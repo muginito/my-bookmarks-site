@@ -1,34 +1,37 @@
-import InputBar from "./InputBar"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useNavigate } from "react-router"
+import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
-export default function Header({ newForm, onSearch }) {
-  // Coloquei a função de busca do App
+export default function Header({ onSearch }) {
+  const navigate = useNavigate()
+
   return (
-    <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-[900px]">
-      <h1
-        className="my-12 md:my-24 w-full font-heading font-bold text-yellow-400 text-3xl md:text-6xl
-          text-center"
-      >
-        Meus Bookmarks
-      </h1>
-      <div className="flex gap-4 w-full">
-        {/* <InputBar id="url" type="text" placeholder="Paste URL" /> */}
-        <InputBar
-          id="search"
-          type="search"
-          placeholder="Search..."
-          // className="md:font-normal text-sm md:text-base"
-          onChange={(e) => onSearch(e.target.value)}
-          // Depois que o usuario digita algo, é enviado para o app atualizar o estado
-        />
+    <header className="top-0 z-1 sticky flex justify-center bg-dark-bg mx-auto">
+      <div className="flex gap-4 px-4 w-full max-w-5xl">
+        <search className="w-full">
+          <div
+            className="flex items-center gap-3 bg-dark-ui px-4 py-3 rounded-full outline-2
+              outline-dark-ui-3 hover:outline-yellow-400 w-full duration-150 ease"
+          >
+            <FontAwesomeIcon icon={faSearch} className="text-dark-ui-3" />
+            <input
+              className="bg-transparent outline-none w-full"
+              id="search"
+              type="search"
+              placeholder="Buscar"
+              onChange={(e) => onSearch(e.target.value)}
+            />
+          </div>
+        </search>
         <button
-          className="bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit font-bold text-dark-bg-2
-            text-sm md:text-base whitespace-nowrap active:scale-95 cursor-pointer"
-          onClick={newForm}
+          className="hidden md:block bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit
+            h-min-full font-bold text-dark-bg-2 text-sm md:text-base whitespace-nowrap
+            active:scale-95 cursor-pointer"
+          onClick={() => navigate("/?form=new")}
         >
-          New Bookmark
+          Novo Bookmark
         </button>
       </div>
-      <hr className="my-6 border border-dark-ui-3 w-full" />
     </header>
   )
 }

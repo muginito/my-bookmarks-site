@@ -20,11 +20,20 @@ export default function BookmarkItem({
       return false
     }
   }
+
+  const handleCardClick = () => {
+    const selection = window.getSelection()
+    if (selection && selection.toString().length > 0) {
+      return
+    }
+    onEdit(bookmark.id)
+  }
+
   return (
     <div
       className="relative bg-dark-bg-2 p-6 border-2 border-dark-ui-2 rounded-2xl w-xs sm:w-sm
         md:w-lg max-w-xl min-h-80"
-      onClick={() => onEdit(bookmark.id)}
+      onClick={handleCardClick}
     >
       <div className="flex justify-between items-center mb-1 bookmark--header">
         <h2 className="font-bold text-xl md:text-2xl bookmark--title">
