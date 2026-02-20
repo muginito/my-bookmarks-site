@@ -60,7 +60,8 @@ function App() {
   const showDeletePopup =
     deleteId === "all" ? (
       <DeletionPopup onConfirm={deleteAllBookmarks}>
-        Tem certeza que deseja deletar todos os bookmarks?
+        Esta ação irá deletar <strong className="font-bold">todos os seus bookmarks</strong>, tem
+        certeza que deseja continuar?
       </DeletionPopup>
     ) : deleteId ? (
       <DeletionPopup onConfirm={() => handleDeleteBookmark(deleteId)}>
@@ -108,32 +109,24 @@ function App() {
     }
   }
 
-  function deleteAllBookmarks() {
-    setBookmarks([])
-    navigate("/")
-  }
-
   /* A seguir, vou explicar o que eu fiz com o botão de export:
   Eu não estava conseguindo dar hidden no icone do export para o mobile, aparentemente o Font injeta o SVG direto no html
   ai eu não conseguia dar hidden md:block pelo tailwind (ele não estava aceitando), então eu embrulhei ele em uma tag padrão do HTML
   assim quando o botão some, o icone tem que ir junto */
   return (
     <>
-      <div
-        className="z-60 relative flex justify-center items-center mt-8 mb-12 md:mb-18 px-6 w-full"
-      >
+      <div className="z-2 relative flex justify-center items-center mt-8 mb-12 md:mb-18 px-6 w-full">
         <h1
           className="w-full font-heading font-bold text-yellow-400 text-2xl md:text-5xl text-center"
         >
           Meus Bookmarks
         </h1>
-        <div className="top-1/2 right-6 z-50 absolute -translate-y-1/2">
+        <div>
           <DropDown
             onExport={exportBookmarks}
             onImport={importBookmarks}
             isMenuOpen={isMenuOpen}
             setIsMenuOpen={setIsMenuOpen}
-            onDeleteAll={deleteAllBookmarks}
           />
         </div>
       </div>
@@ -154,5 +147,3 @@ function App() {
 }
 
 export default App
-// <ImportButton onImport={importBookmarks} />
-// <Button onClick={deleteAllBookmarks}>Delete All</Button>
