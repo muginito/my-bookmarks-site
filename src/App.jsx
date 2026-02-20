@@ -57,6 +57,12 @@ function App() {
     navigate("/")
   }
 
+  //Delete All Bookmarks
+  function deleteAllBookmarks() {
+    setBookmarks([])
+    navigate("/")
+  }
+
   const showDeletePopup =
     deleteId === "all" ? (
       <DeletionPopup onConfirm={deleteAllBookmarks}>
