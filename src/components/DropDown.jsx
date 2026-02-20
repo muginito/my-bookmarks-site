@@ -39,7 +39,7 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
         initial="closed"
         animate={isMenuOpen ? "open" : "closed"}
         transition={{ duration: 0.2 }}
-        className="right-0 bottom-16 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow-2xl p-2 border
+        className="right-0 top-16 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow-2xl p-2 border
           border-dark-ui-3 rounded-xl w-48 origin-bottom-right"
       >
         {/* Opção de export */}

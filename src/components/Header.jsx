@@ -8,14 +8,8 @@ export default function Header({ onSearch, onExport, onImport, isMenuOpen, setIs
 
   // Coloquei a função de busca do App
   return (
-    <header className="flex flex-col justify-center items-center m-auto w-[75%] max-w-225">
+    <header className="flex flex-col m-auto w-[75%] max-w-225">
       <div className="flex gap-4 w-full">
-        <DropDown
-          onExport={onExport}
-          onImport={onImport}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-        />
         {/* <InputBar id="url" type="text" placeholder="Paste URL" /> */}
         <InputBar
           id="search"
