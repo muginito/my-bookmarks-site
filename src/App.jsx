@@ -119,7 +119,7 @@ function App() {
   assim quando o botão some, o icone tem que ir junto */
   return (
     <>
-      <div className="relative flex justify-center items-center w-full mt-8 mb-12 md:mb-18 px-6">
+      <div className="relative z-0 flex justify-center items-center w-full mt-8 mb-12 md:mb-18 px-6">
         <h1
           className="w-full font-heading font-bold text-yellow-400 text-2xl md:text-5xl text-center"
         >
@@ -131,6 +131,7 @@ function App() {
             onImport={importBookmarks}
             isMenuOpen={isMenuOpen}
             setIsMenuOpen={setIsMenuOpen}
+            onDeleteAll={deleteAllBookmarks}
           />
         </div>
       </div>

@@ -1,9 +1,9 @@
-import { faBars, faFileExport, faFileImport } from "@fortawesome/free-solid-svg-icons"
+import { faBars, faFileExport, faFileImport, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion } from "framer-motion"
 import { useEffect } from "react"
 
-export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen }) {
+export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen, onDeleteAll }) {
   useEffect(() => {
     function handleClickOutside(event) {
       const menu = document.getElementById("dropdownToggle")
@@ -74,6 +74,19 @@ export default function DropDown({ onExport, onImport, isMenuOpen, setIsMenuOpen
           <FontAwesomeIcon icon={faFileImport} className="w-5" />
           <span className="font-medium text-sm">Importar</span>
         </label>
+        {/* Opção de Deletar Tudo */}
+        <button
+          onClick={() => {
+            if (onDeleteAll) onDeleteAll()
+            setIsMenuOpen(false) // Fecha o menu ao clicar
+          }}
+          className="flex items-center gap-3 hover:bg-red-500/10 p-3 rounded-lg outline-none w-full
+            text-gray-200 hover:text-red-500 text-left transition-all"
+        >
+          {/* Se você tiver o faTrash importado do FontAwesome, use-o aqui: */}
+          <FontAwesomeIcon icon={faTrash} className="w-5" />
+          <span className="font-medium text-sm">Deletar Tudo</span>
+        </button>
       </motion.div>
     </div>
   )
