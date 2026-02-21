@@ -25,3 +25,5 @@ dist-ssr
 
 # Local context file
 context.md
+.vercel
+.env*.local
