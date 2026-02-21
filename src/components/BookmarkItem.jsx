@@ -35,7 +35,7 @@ export default function BookmarkItem({
         md:w-lg max-w-xl min-h-80"
       onClick={handleCardClick}
     >
-      <div className="flex justify-between items-center mb-1 bookmark--header">
+      <div className="flex justify-between mb-1 bookmark--header">
         <h2 className="font-bold text-xl md:text-2xl bookmark--title">
           {isValidUrl(url) ? (
             <a
@@ -56,9 +56,7 @@ export default function BookmarkItem({
             <div className="inline-block w-fit cursor-pointer">{title}</div>
           )}
           {year && (
-            <span className="invisible sm:visible ml-2 w-fit text-base md:text-lg sm:">
-              ({year})
-            </span>
+            <span className="invisible sm:visible w-fit text-base md:text-lg sm:"> ({year})</span>
           )}
         </h2>
 
