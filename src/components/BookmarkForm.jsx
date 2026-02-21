@@ -168,14 +168,14 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
 
           <input
             type="text"
-            placeholder="Author"
+            placeholder="Autor"
             className="focus:outline-0 text-sm"
             {...register("author", { required: false })}
           />
 
           <input
             type="text"
-            placeholder="Year of Publication"
+            placeholder="Ano de Publicação"
             className="focus:outline-0 text-sm"
             {...register("year", { required: false })}
           />
