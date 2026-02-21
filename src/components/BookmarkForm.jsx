@@ -81,30 +81,42 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
     async function fetchUrlMetaData(url) {
       if (!url) return ""
 
-      const baseUrl = new URL("https://corsproxy.io")
-      baseUrl.searchParams.append("url", url)
+      try {
+        const baseUrl = new URL("/api/fetch-metadata", window.location.origin)
+        baseUrl.searchParams.append("url", url)
 
-      const resp = await fetch(baseUrl)
+        const res = await fetch(baseUrl)
 
-      const nodes = parse(await resp.text())
-
-      let metadata = {}
-
-      nodes.querySelectorAll("meta").forEach((meta) => {
-        if (meta.getAttribute("name") == "author" && metadata.author == undefined) {
-          metadata.author = meta.getAttribute("content")
+        if (!res.ok) {
+          console.error("Failed to fetch metadata:", await res.text())
+          return
         }
-        if (meta.getAttribute("name") == "description" && metadata.description == undefined) {
-          metadata.description = meta.getAttribute("content")
-        }
-      })
 
-      reset({
-        ...register,
-        title: nodes.querySelector("title").textContent,
-        author: metadata.author,
-        description: metadata.description,
-      })
+        const root = parse(await res.text())
+
+        let metadata = {}
+
+        const titleElement = root.querySelector("title")
+        metadata.title = titleElement ? titleElement.textContent : ""
+
+        root.querySelectorAll("meta").forEach((meta) => {
+          if (meta.getAttribute("name") == "author" && metadata.author == undefined) {
+            metadata.author = meta.getAttribute("content")
+          }
+          if (meta.getAttribute("name") == "description" && metadata.description == undefined) {
+            metadata.description = meta.getAttribute("content")
+          }
+        })
+
+        reset({
+          ...register,
+          title: metadata.title,
+          author: metadata.author,
+          description: metadata.description,
+        })
+      } catch (error) {
+        console.error("Error fetching URL metadata:", error)
+      }
     }
 
     if (mode !== "edit" && url) {
