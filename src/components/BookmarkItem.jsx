@@ -61,7 +61,7 @@ export default function BookmarkItem({
           )}
         </div>
 
-        <AnimatedButton>
+        <AnimatedButton aria-label="Deletar bookmark">
           <FontAwesomeIcon
             icon={faTrashCan}
             className="text-dark-ui-3 hover:text-red-600 text-lg md:text-xl cursor-pointer"

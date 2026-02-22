@@ -163,6 +163,7 @@ function App() {
           className="hidden 2xl:hidden sm:block text-dark-bg-2 text-4xl sm:text-5xl
             whitespace-nowrap cursor-pointer"
           onClick={() => navigate("/?form=new")}
+          aria-label="Novo bookmark"
         >
           <FontAwesomeIcon icon={faPlusCircle} className="text-yellow-400 hover:text-yellow-300" />
         </AnimatedButton>
