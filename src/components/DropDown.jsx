@@ -60,8 +60,8 @@ export default function DropDown({ onExport, onImport }) {
         initial={false}
         animate={open ? "open" : "closed"}
         transition={{ duration: 0.2 }}
-        className="top-10 right-1/5 z-50 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow-2xl p-2
-          border border-dark-ui-3 rounded-xl w-48"
+        className="top-10 right-1/5 z-50 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow p-2 border
+          border-dark-ui-3 rounded-xl w-48"
       >
         <motion.li variants={item}>
           {/* Opção de export */}
