@@ -28,13 +28,14 @@ export default function MobileBar() {
       }}
       animate={isHidden ? "hidden" : "visible"}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="md:hidden right-0 bottom-0 left-0 z-50 fixed flex flex-col justify-between
+      className="sm:hidden right-0 bottom-0 left-0 z-50 fixed flex flex-col justify-between
         items-center bg-[#1a1a1a] px-6 border-dark-ui-3 border-t h-16"
     >
       {/*  Botão de adicionar Form (Centro) */}
       <button
         onClick={() => navigate("/?form=new")}
-        className="w-12 h-12 text-dark-ye text-6xl active:scale-95 transition-all duration-150 flex justify center items-center my-2"
+        className="flex items-center my-2 w-12 h-12 text-dark-ye text-6xl active:scale-95
+          transition-all duration-150 justify center"
       >
         <FontAwesomeIcon icon={faSquarePlus} />
       </button>
