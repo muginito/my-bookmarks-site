@@ -51,6 +51,7 @@ export default function DropDown({ onExport, onImport }) {
         className={`flex justify-center items-center rounded-xl w-fit h-fit p-2 text-xl
           active:scale-95 transition-all focus:outline-none cursor-pointer
           ${open ? " text-white" : "text-dark-ui-2 hover:text-dark-tx-2"}`}
+        aria-label="Menu"
       >
         <FontAwesomeIcon icon={faBars} />
       </button>
