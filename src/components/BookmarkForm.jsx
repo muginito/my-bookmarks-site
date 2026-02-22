@@ -6,6 +6,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons"
 import parse from "node-html-parser"
 import { useNavigate } from "react-router"
 import AnimatedButton from "./AnimatedButton"
+import { motion } from "framer-motion"
 
 export default function BookmarkForm({ initialData, mode, onSubmit }) {
   const { register, handleSubmit, reset, control } = useForm({
@@ -128,7 +129,10 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
   return (
     <div className="top-0 z-50 fixed flex justify-center sm:items-center w-screen h-screen">
       <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleFormSubmit}></div>
-      <form
+      <motion.form
+        initial={{ scale: 0.5, opacity: 1 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
         onSubmit={handleSubmit(handleFormSubmit)}
         className="absolute flex flex-col bg-dark-ui p-8 sm:p-10 sm:border-2 sm:border-dark-ui-3
           sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-dvh sm:max-h-[90dvh]"
@@ -184,7 +188,7 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
         >
           {initialData?.id ? "Salvar alterações" : "Salvar"}
         </AnimatedButton>
-      </form>
+      </motion.form>
     </div>
   )
 }
