@@ -36,6 +36,7 @@ export default function MobileBar() {
         onClick={() => navigate("/?form=new")}
         className="flex items-center my-2 w-12 h-12 text-dark-ye text-6xl active:scale-95
           transition-all duration-150 justify center"
+        aria-label="Novo bookmark"
       >
         <FontAwesomeIcon icon={faSquarePlus} />
       </button>

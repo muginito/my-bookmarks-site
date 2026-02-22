@@ -42,6 +42,7 @@ export default function BookmarkList({ bookmarks }) {
                   disabled:cursor-default"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => prev - 1)}
+                aria-label="Página anterior"
               >
                 <FontAwesomeIcon icon={faAngleLeft} />
               </AnimatedButton>
@@ -51,6 +52,7 @@ export default function BookmarkList({ bookmarks }) {
                   disabled:cursor-default"
                 disabled={indexOfLastItem >= bookmarks.length}
                 onClick={() => setCurrentPage((prev) => prev + 1)}
+                aria-label="Próxima página"
               >
                 <FontAwesomeIcon icon={faAngleRight} />
               </AnimatedButton>

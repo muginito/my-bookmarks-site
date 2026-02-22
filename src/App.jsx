@@ -3,7 +3,6 @@ import { useLocalStorage } from "react-use"
 import BookmarkList from "./components/BookmarkList.jsx"
 import BookmarkForm from "./components/BookmarkForm.jsx"
 import DeletionPopup from "./components/DeletionPopup.jsx"
-import Header from "./components/Header.jsx"
 import MobileBar from "./components/MobileBar.jsx"
 import Fuse from "fuse.js"
 import { useNavigate, useSearchParams } from "react-router"
@@ -163,6 +162,7 @@ function App() {
           className="hidden 2xl:hidden sm:block text-dark-bg-2 text-4xl sm:text-5xl
             whitespace-nowrap cursor-pointer"
           onClick={() => navigate("/?form=new")}
+          aria-label="Novo bookmark"
         >
           <FontAwesomeIcon icon={faPlusCircle} className="text-yellow-400 hover:text-yellow-300" />
         </AnimatedButton>
