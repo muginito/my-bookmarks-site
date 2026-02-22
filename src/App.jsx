@@ -119,7 +119,7 @@ function App() {
 
   return (
     <>
-      <div className="z-1 relative mx-auto my-8 w-full text-center">
+      <div className="z-2 relative mx-auto my-8 w-full text-center">
         <h1
           className="inline font-heading font-bold text-yellow-400 text-2xl sm:text-3xl md:text-4xl
             lg:text-5xl text-center"
