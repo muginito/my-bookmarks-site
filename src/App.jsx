@@ -8,11 +8,13 @@ import MobileBar from "./components/MobileBar.jsx"
 import Fuse from "fuse.js"
 import { useNavigate, useSearchParams } from "react-router"
 import DropDown from "./components/DropDown.jsx"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlusCircle, faSearch } from "@fortawesome/free-solid-svg-icons"
+import AnimatedButton from "./components/AnimatedButton.jsx"
+import { AnimatePresence } from "framer-motion"
 
 function App() {
   const [bookmarks, setBookmarks] = useLocalStorage("bookmarks", [])
-  //Menu Dropdown
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
@@ -115,39 +117,61 @@ function App() {
     }
   }
 
-  /* A seguir, vou explicar o que eu fiz com o botão de export:
-  Eu não estava conseguindo dar hidden no icone do export para o mobile, aparentemente o Font injeta o SVG direto no html
-  ai eu não conseguia dar hidden md:block pelo tailwind (ele não estava aceitando), então eu embrulhei ele em uma tag padrão do HTML
-  assim quando o botão some, o icone tem que ir junto */
   return (
     <>
-      <div className="z-2 relative flex justify-center items-center mt-8 mb-12 md:mb-18 px-6 w-full">
+      <div className="z-1 relative mx-auto my-8 w-full text-center">
         <h1
-          className="w-full font-heading font-bold text-yellow-400 text-2xl md:text-5xl text-center"
+          className="inline font-heading font-bold text-yellow-400 text-2xl sm:text-3xl md:text-4xl
+            lg:text-5xl text-center"
         >
           Meus Bookmarks
         </h1>
-        <div>
-          <DropDown
-            onExport={exportBookmarks}
-            onImport={importBookmarks}
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
-          />
+        <div className="top-0 right-2 absolute">
+          <DropDown onExport={exportBookmarks} onImport={importBookmarks} />
         </div>
       </div>
-      <Header
-        onSearch={setSearch}
-        onExport={exportBookmarks}
-        onImport={importBookmarks}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-      />
-      <hr className="mx-auto my-6 border border-dark-ui-3 w-[75%]" />
+
+      <header
+        className="top-0 z-1 sticky flex justify-center gap-4 bg-dark-bg mx-auto py-4 w-full
+          max-w-4xl"
+      >
+        {/* Barra de busca */}
+        <search
+          className="flex items-center gap-3 bg-dark-ui px-4 py-2 md:py-3 rounded-full outline-2
+            outline-dark-ui-3 hover:outline-yellow-400 w-[80%] duration-150 ease"
+        >
+          <FontAwesomeIcon icon={faSearch} className="text-dark-ui-3 text-base md:text-lg" />
+          <input
+            className="bg-transparent outline-none w-full"
+            id="search"
+            type="search"
+            placeholder="Buscar"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </search>
+
+        <AnimatedButton
+          className="hidden 2xl:block bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit
+            h-min-full font-bold text-dark-bg-2 text-sm md:text-base whitespace-nowrap
+            cursor-pointer"
+          onClick={() => navigate("/?form=new")}
+        >
+          Novo Bookmark
+        </AnimatedButton>
+
+        <AnimatedButton
+          className="hidden 2xl:hidden sm:block text-dark-bg-2 text-4xl sm:text-5xl
+            whitespace-nowrap cursor-pointer"
+          onClick={() => navigate("/?form=new")}
+        >
+          <FontAwesomeIcon icon={faPlusCircle} className="text-yellow-400 hover:text-yellow-300" />
+        </AnimatedButton>
+      </header>
+      <hr className="mx-auto mt-2 mb-6 border border-dark-ui-3 w-[70%] max-w-6xl" />
       <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
       <MobileBar />
-      {showDeletePopup}
-      {showForm}
+      <AnimatePresence>{showDeletePopup}</AnimatePresence>
+      <AnimatePresence>{showForm}</AnimatePresence>
     </>
   )
 }

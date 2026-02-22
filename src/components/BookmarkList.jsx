@@ -1,9 +1,9 @@
 import { useState } from "react"
 import BookmarkItem from "./BookmarkItem"
-import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router"
+import AnimatedButton from "./AnimatedButton"
 
 export default function BookmarkList({ bookmarks }) {
   const navigate = useNavigate()
@@ -37,19 +37,23 @@ export default function BookmarkList({ bookmarks }) {
           <>
             <hr className="my-2 border border-dark-ui-3 w-32 sm:w-2xs" />
             <div className="flex justify-center items-center gap-8 pb-4">
-              <Button
+              <AnimatedButton
+                className="p-2 disabled:text-dark-ui text-base-400 cursor-pointer
+                  disabled:cursor-default"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => prev - 1)}
               >
-                <FontAwesomeIcon icon={faAngleLeft} className="text-base-200" />
-              </Button>
+                <FontAwesomeIcon icon={faAngleLeft} />
+              </AnimatedButton>
               <span> Page {currentPage} </span>
-              <Button
+              <AnimatedButton
+                className="p-2 disabled:text-dark-ui text-base-400 cursor-pointer
+                  disabled:cursor-default"
                 disabled={indexOfLastItem >= bookmarks.length}
                 onClick={() => setCurrentPage((prev) => prev + 1)}
               >
                 <FontAwesomeIcon icon={faAngleRight} />
-              </Button>
+              </AnimatedButton>
             </div>
           </>
         )}

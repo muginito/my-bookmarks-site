@@ -1,11 +1,12 @@
 import { useLockBodyScroll } from "react-use"
 import { useForm, useWatch } from "react-hook-form"
 import { useCallback, useEffect } from "react"
-import Button from "./Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faX } from "@fortawesome/free-solid-svg-icons"
 import parse from "node-html-parser"
 import { useNavigate } from "react-router"
+import AnimatedButton from "./AnimatedButton"
+import { motion } from "framer-motion"
 
 export default function BookmarkForm({ initialData, mode, onSubmit }) {
   const { register, handleSubmit, reset, control } = useForm({
@@ -61,16 +62,6 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
       document.removeEventListener("keydown", handleEscapeKey)
     }
   }, [handleClose])
-
-  // function debounce(func, timeout = 100) {
-  //   let timer
-  //   return (...args) => {
-  //     clearTimeout(timer)
-  //     timer = setTimeout(() => {
-  //       func.apply(this, args)
-  //     }, timeout)
-  //   }
-  // }
 
   const url = useWatch({
     name: "url",
@@ -137,8 +128,11 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
   useLockBodyScroll()
   return (
     <div className="top-0 z-50 fixed flex justify-center sm:items-center w-screen h-screen">
-      <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleClose}></div>
-      <form
+      <div className="sm:backdrop-blur-xs sm:w-screen sm:h-screen" onClick={handleFormSubmit}></div>
+      <motion.form
+        initial={{ scale: 0.5, opacity: 1 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
         onSubmit={handleSubmit(handleFormSubmit)}
         className="absolute flex flex-col bg-dark-ui p-8 sm:p-10 sm:border-2 sm:border-dark-ui-3
           sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-dvh sm:max-h-[90dvh]"
@@ -168,14 +162,14 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
 
           <input
             type="text"
-            placeholder="Author"
+            placeholder="Autor"
             className="focus:outline-0 text-sm"
             {...register("author", { required: false })}
           />
 
           <input
             type="text"
-            placeholder="Year of Publication"
+            placeholder="Ano de Publicação"
             className="focus:outline-0 text-sm"
             {...register("year", { required: false })}
           />
@@ -186,15 +180,15 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
           className="mt-4 mb-8 focus:outline-0 w-full text-sm resize-none grow"
           {...register("description", { required: true })}
         />
-        <Button
+        <AnimatedButton
           type="submit"
-          className="bg-dark-ui mt-auto px-5 py-2.5 border border-transparent
-            hover:border-yellow-400 rounded-lg text-base transition-colors duration-250
-            cursor-pointer shrink-0"
+          className="bg-dark-ui hover:bg-dark-ui-2 m-auto px-5 py-2.5 border border-transparent
+            hover:border-yellow-400 rounded-lg w-fit hover:text-white text-base text-center
+            transition-colors duration-250 cursor-pointer shrink-0"
         >
           {initialData?.id ? "Salvar alterações" : "Salvar"}
-        </Button>
-      </form>
+        </AnimatedButton>
+      </motion.form>
     </div>
   )
 }

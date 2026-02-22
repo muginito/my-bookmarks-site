@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan"
+import { motion } from "framer-motion"
+import AnimatedButton from "./AnimatedButton"
 
 export default function BookmarkItem({
   url,
@@ -30,54 +32,50 @@ export default function BookmarkItem({
   }
 
   return (
-    <div
-      className="relative bg-dark-bg-2 p-6 border-2 border-dark-ui-2 rounded-2xl w-xs sm:w-sm
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="relative bg-dark-bg-2 shadow p-6 border-2 border-dark-ui-2 rounded-2xl w-xs sm:w-sm
         md:w-lg max-w-xl min-h-80"
       onClick={handleCardClick}
     >
-      <div className="flex justify-between items-center mb-1 bookmark--header">
-        <h2 className="font-bold text-xl md:text-2xl bookmark--title">
+      <div className="flex justify-between mb-1 bookmark--header">
+        <div className="font-bold text-xl md:text-2xl bookmark--title">
           {isValidUrl(url) ? (
-            <a
+            <motion.a
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-400"
+              className="inline-block w-fit text-blue-400 hover:underline underline-offset-4
+                cursor-pointer"
               onClick={(e) => e.stopPropagation()}
             >
-              <div
-                className="inline-block w-fit hover:underline underline-offset-4 active:scale-105
-                  duration-200 ease-in-out cursor-pointer"
-              >
-                {title}
-              </div>
-            </a>
+              {title}
+            </motion.a>
           ) : (
-            <div className="inline-block w-fit cursor-pointer">{title}</div>
+            <h2 className="inline text-dark-ye">{title}</h2>
           )}
           {year && (
-            <span className="invisible sm:visible ml-2 w-fit text-base md:text-lg sm:">
-              ({year})
-            </span>
+            <span className="invisible sm:visible w-fit text-base md:text-lg"> ({year})</span>
           )}
-        </h2>
+        </div>
 
-        <FontAwesomeIcon
-          icon={faTrashCan}
-          className="text-dark-ui-3 hover:text-red-600 text-lg md:text-xl active:scale-95
-            duration-150 cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete(bookmark.id)
-          }}
-        />
+        <AnimatedButton>
+          <FontAwesomeIcon
+            icon={faTrashCan}
+            className="text-dark-ui-3 hover:text-red-600 text-lg md:text-xl cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete(bookmark.id)
+            }}
+          />
+        </AnimatedButton>
       </div>
       {author && <span className="w-fit text-sm md:text-base">{author}</span>}
       <p className="my-8 text-sm md:text-base whitespace-pre-wrap">{description}</p>
-      {/* <div className="w-full text-dark-tx-2 text-sm md:text-base bookmark--footer"> */}
       {/* dia de mês de ano */}
       <span className="bottom-6 absolute text-dark-tx-2 text-sm md:text-base">{date}</span>
-      {/* </div> */}
-    </div>
+    </motion.div>
   )
 }
