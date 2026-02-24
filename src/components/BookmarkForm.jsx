@@ -137,12 +137,18 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
         className="absolute flex flex-col bg-dark-ui p-8 sm:p-10 sm:border-2 sm:border-dark-ui-3
           sm:rounded-2xl focus:outline-0 w-screen sm:w-xl h-dvh sm:max-h-[90dvh]"
       >
-        <FontAwesomeIcon
-          icon={faX}
+        <button
+          aria-label="Fechar formulário"
+          type="button"
+          className="self-start mb-4"
           onClick={handleClose}
-          className="relative hover:bg-dark-ui-3 p-2 rounded-full text-base-500 text-lg
-            -translate-2.5 duration-150"
-        />
+        >
+          <FontAwesomeIcon
+            icon={faX}
+            className="hover:text-base-200 drop-shadow-lg rounded-full text-base-500 text-lg
+              duration-150"
+          />
+        </button>
         <div className="flex flex-col gap-2 sm:gap-4 mb-4">
           <input
             type="text"
