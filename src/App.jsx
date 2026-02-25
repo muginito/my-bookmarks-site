@@ -36,7 +36,7 @@ function App() {
     const output = {
       ...data,
       id: Date.now().toString(),
-      date: new Date().toLocaleDateString("pt-BR", {
+      createdDate: new Date().toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "long",
         year: "numeric",
@@ -106,7 +106,10 @@ function App() {
         try {
           const importedBookmarks = JSON.parse(reader.result)
           if (Array.isArray(importedBookmarks)) {
-            setBookmarks(importedBookmarks)
+            const newBookmarks = [...bookmarks, ...importedBookmarks]
+            setBookmarks(
+              newBookmarks.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)),
+            )
           }
         } catch (error) {
           console.error("Erro ao importar bookmarks:", error)
