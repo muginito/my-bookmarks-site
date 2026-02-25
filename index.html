@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/bookmark.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Bookmarks</title>
+
+    <!-- aplica o tema ANTES do React -->
+    <script>
+      (function () {
+        const theme = localStorage.getItem("theme") || "auto"
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+        const isDark = theme === "dark" || (theme === "auto" && prefersDark)
+
+        if (isDark) {
+          document.documentElement.classList.add("dark")
+        } else {
+          document.documentElement.classList.remove("dark")
+        }
+      })()
+    </script>
+
+    <script type="module" src="src/main.jsx" defer></script>
+  </head>
+
+  <body class="antialiased">
+    <div id="root"></div>
+  </body>
+</html>
