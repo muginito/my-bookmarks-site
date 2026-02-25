@@ -1,83 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
-/* @reference "./replacement.css"; */
 
 @theme {
   --font-sans: "Inter", sans-serif;
   --font-heading: "Montserrat", sans-serif;
-}
-
-@layer components {
-  .bookmark--card {
-    display: flex;
-    flex-direction: column;
-    width: 60%;
-    background-color: var(--color-dark-ui);
-    border-radius: 16px;
-    border: 2px solid var(--color-dark-ui-3);
-    padding: 2em 2.5em;
-    margin-bottom: 1.5em;
-    min-height: 320px;
-    max-height: 640px;
-    max-width: 648px;
-    gap: 1.5em;
-  }
-
-  .bookmark--tags {
-    display: flex;
-    /* gap: 2em; */
-    justify-content: space-around;
-  }
-
-  .bookmark--tag {
-    font-size: 0.8rem;
-    padding: 0.25em 1.2em;
-    /* outline: 1px solid var(--color-yellow-400); */
-    /* border: none; */
-    /* border-radius: 32px; */
-  }
-
-  .bookmark--tag:hover {
-    color: var(--color-yellow-400);
-    scale: 1.2;
-    font-weight: 700;
-    transition: all 0.3s ease;
-  }
-
-  .bar {
-    width: 100%;
-    padding: 0.5em 2em;
-    outline: 2px solid var(--color-dark-ui-3);
-    border: none;
-    border-radius: 32px;
-    background-color: var(--color-dark-ui);
-    color: var(--font-color-1);
-    text-decoration: none;
-  }
-
-  .bar:hover {
-    outline-color: var(--color-yellow-400);
-    transition: outline-color 0.3s ease;
-  }
-
-  .bar::placeholder {
-    color: var(--color-dark-tx-3);
-    font-size: 0.8rem;
-    font-weight: 700;
-  }
-}
-
-:root {
-  --primary-color: #d0a215;
-  --primary-bg-color: #1c1b1a;
-  --secondary-bg-color: #282726;
-  --secondary-color: #ff5722;
-  --font-color-1: #cecdc3;
-  --font-color-2: #878580;
-  --link-color: #4385be;
-  --ui-color-1: #403e3c;
-  --ui-color-2: #575653;
-  --link-color: #4385be;
 }
 
 html {
@@ -100,8 +26,6 @@ html {
 ::-webkit-scrollbar-track {
   background: var(--color-dark-bg-2);
   transition: background 0.3s ease;
-  border-radius: 100vw;
-  margin-block: 0.5em;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -112,101 +36,4 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-yellow-400);
-}
-
-#page-title {
-  font-family: "Montserrat", sans-serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin: 48px 0;
-  text-align: center;
-}
-
-nav {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1em;
-}
-
-/* .bar { */
-/*   width: 100%; */
-/*   padding: 0.5em 2em; */
-/*   outline: 2px solid var(--ui-color-1); */
-/*   border: none; */
-/*   border-radius: 32px; */
-/*   background-color: var(--secondary-bg-color); */
-/*   color: var(--font-color-1); */
-/*   text-decoration: none; */
-/* } */
-
-/* .bar:hover { */
-/*   outline-color: var(--primary-color); */
-/*   transition: outline-color 0.3s ease; */
-/* } */
-
-/* .bar::placeholder { */
-/*   color: var(--ui-color-2); */
-/*   font-size: 0.8rem; */
-/*   font-weight: 700; */
-/* } */
-
-.bookmark--list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vw;
-}
-
-/* .bookmark--card { */
-/*   display: flex; */
-/*   flex-direction: column; */
-/*   width: 70%; */
-/*   background-color: var(--secondary-bg-color); */
-/*   border-radius: 16px; */
-/*   border: 2px solid var(--ui-color-1); */
-/*   padding: 2em 2.5em; */
-/*   margin-bottom: 1.5em; */
-/*   min-height: 420px; */
-/*   max-width: 648px; */
-/*   gap: 1.5em; */
-/**/
-/*   a { */
-/*     color: var(--link-color); */
-/*   } */
-/**/
-/*   a:hover { */
-/*       border-bottom: 2px solid var(--link-color); */
-/*       transition: opacity 0.3s ease; */
-/*   } */
-/* } */
-
-/* .bookmark--description { */
-/*     min-height: 200px; */
-/* } */
-
-.bookmark--footer {
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 3em;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--ui-color-2);
-}
-
-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 1em;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--font-color-2);
 }
