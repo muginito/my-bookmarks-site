@@ -24,13 +24,12 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-dark-bg-2);
-  transition: background 0.3s ease;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-dark-ui-3);
-  border: 3px solid var(--color-dark-bg-2);
+  border: 3px solid var(--color-dark-bg);
   border-radius: 100vw;
 }
 
