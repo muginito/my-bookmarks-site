@@ -36,7 +36,7 @@ function App() {
     const output = {
       ...data,
       id: Date.now().toString(),
-      date: new Date().toLocaleDateString("pt-BR", {
+      createdDate: new Date().toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "long",
         year: "numeric",
@@ -106,7 +106,10 @@ function App() {
         try {
           const importedBookmarks = JSON.parse(reader.result)
           if (Array.isArray(importedBookmarks)) {
-            setBookmarks(importedBookmarks)
+            const newBookmarks = [...bookmarks, ...importedBookmarks]
+            setBookmarks(
+              newBookmarks.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)),
+            )
           }
         } catch (error) {
           console.error("Erro ao importar bookmarks:", error)
@@ -130,44 +133,44 @@ function App() {
         </div>
       </div>
 
-      <header
-        className="top-0 z-1 sticky flex justify-center gap-4 bg-dark-bg mx-auto py-4 w-full
-          max-w-4xl"
-      >
+      <div className="top-0 z-1 sticky backdrop-blur-md border-dark-ui border-b w-full">
         {/* Barra de busca */}
-        <search
-          className="flex items-center gap-3 bg-dark-ui px-4 py-2 md:py-3 rounded-full outline-2
-            outline-dark-ui-3 hover:outline-yellow-400 w-[80%] duration-150 ease"
-        >
-          <FontAwesomeIcon icon={faSearch} className="text-dark-ui-3 text-base md:text-lg" />
-          <input
-            className="bg-transparent outline-none w-full"
-            id="search"
-            type="search"
-            placeholder="Buscar"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </search>
-
-        <AnimatedButton
-          className="hidden 2xl:block bg-dark-ye hover:bg-yellow-300 px-4 rounded-4xl w-fit
-            h-min-full font-bold text-dark-bg-2 text-sm md:text-base whitespace-nowrap
-            cursor-pointer"
-          onClick={() => navigate("/?form=new")}
-        >
-          Novo Bookmark
-        </AnimatedButton>
-
-        <AnimatedButton
-          className="hidden 2xl:hidden sm:block text-dark-bg-2 text-4xl sm:text-5xl
-            whitespace-nowrap cursor-pointer"
-          onClick={() => navigate("/?form=new")}
-          aria-label="Novo bookmark"
-        >
-          <FontAwesomeIcon icon={faPlusCircle} className="text-yellow-400 hover:text-yellow-300" />
-        </AnimatedButton>
-      </header>
-      <hr className="mx-auto mt-2 mb-6 border border-dark-ui-3 w-[70%] max-w-6xl" />
+        <div className="flex justify-center gap-4 mx-auto py-4 w-full max-w-4xl">
+          <search
+            className="flex items-center gap-3 bg-dark-ui px-4 py-2 md:py-3 rounded-full outline-2
+              outline-dark-ui-3 hover:outline-yellow-400 w-[80%] duration-150 ease"
+          >
+            <FontAwesomeIcon icon={faSearch} className="text-dark-ui-3 text-base md:text-lg" />
+            <input
+              className="bg-transparent outline-none w-full"
+              id="search"
+              type="search"
+              placeholder="Buscar"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </search>
+          <AnimatedButton
+            className="hidden 2xl:block active:inset-shadow-sm active:inset-shadow-yellow-700
+              bg-dark-ye hover:bg-yellow-300 px-5 rounded-4xl w-fit h-min-full font-bold
+              text-dark-bg-2 text-sm md:text-base whitespace-nowrap cursor-pointer"
+            onClick={() => navigate("/?form=new")}
+          >
+            Novo Bookmark
+          </AnimatedButton>
+          <AnimatedButton
+            className="hidden 2xl:hidden sm:block text-dark-bg-2 text-4xl sm:text-5xl
+              whitespace-nowrap cursor-pointer"
+            onClick={() => navigate("/?form=new")}
+            aria-label="Novo bookmark"
+          >
+            <FontAwesomeIcon
+              icon={faPlusCircle}
+              className="text-yellow-400 hover:text-yellow-300 transition-all"
+            />
+          </AnimatedButton>
+        </div>
+      </div>
+      <br />
       <BookmarkList bookmarks={searchResult} onDelete={handleDeleteBookmark} />
       <MobileBar />
       <AnimatePresence>{showDeletePopup}</AnimatePresence>

@@ -34,15 +34,14 @@ export default function BookmarkItem({
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="relative bg-dark-bg-2 shadow p-6 border-2 border-dark-ui-2 rounded-2xl w-xs sm:w-sm
-        md:w-lg max-w-xl min-h-80"
+      className="relative bg-linear-to-br from-dark-bg-2 to-dark-bg shadow p-6 border-2
+        border-dark-ui-2 rounded-2xl w-xs sm:w-sm md:w-lg max-w-xl min-h-80"
       onClick={handleCardClick}
     >
-      <div className="flex justify-between mb-1 bookmark--header">
-        <div className="font-bold text-xl md:text-2xl bookmark--title">
+      <div className="flex justify-between items-start mb-1">
+        <div className="flex flex-col font-bold text-xl md:text-2xl">
           {isValidUrl(url) ? (
             <motion.a
-              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               href={url}
               target="_blank"
@@ -57,7 +56,9 @@ export default function BookmarkItem({
             <h2 className="inline text-dark-ye">{title}</h2>
           )}
           {year && (
-            <span className="invisible sm:visible w-fit text-base md:text-lg"> ({year})</span>
+            <span className="invisible sm:visible w-fit text-dark-tx-2 text-base md:text-lg">
+              ({year})
+            </span>
           )}
         </div>
 
@@ -72,10 +73,10 @@ export default function BookmarkItem({
           />
         </AnimatedButton>
       </div>
-      {author && <span className="w-fit text-sm md:text-base">{author}</span>}
-      <p className="my-8 text-sm md:text-base whitespace-pre-wrap">{description}</p>
+      {author && <span className="w-fit text-dark-tx-2 text-sm md:text-base">{author}</span>}
+      <p className="my-8 text-dark-tx text-sm md:text-base whitespace-pre-wrap">{description}</p>
       {/* dia de mês de ano */}
-      <span className="bottom-6 absolute text-dark-tx-2 text-sm md:text-base">{date}</span>
+      <span className="right-6 bottom-6 absolute text-dark-tx-3 text-xs md:text-sm">{date}</span>
     </motion.div>
   )
 }

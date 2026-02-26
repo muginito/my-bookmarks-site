@@ -1,4 +1,4 @@
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons"
+import { faCirclePlus, faSquarePlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router"
 import { useState } from "react"
@@ -34,11 +34,11 @@ export default function MobileBar() {
       {/*  Botão de adicionar Form (Centro) */}
       <button
         onClick={() => navigate("/?form=new")}
-        className="flex items-center my-2 w-12 h-12 text-dark-ye text-6xl active:scale-95
+        className="flex items-center my-2 w-12 h-12 text-dark-ye text-5xl active:scale-95
           transition-all duration-150 justify center"
         aria-label="Novo bookmark"
       >
-        <FontAwesomeIcon icon={faSquarePlus} />
+        <FontAwesomeIcon icon={faCirclePlus} />
       </button>
     </motion.div>
   )

@@ -31,7 +31,6 @@ export default function DropDown({ onExport, onImport }) {
     },
     open: {
       opacity: 1,
-      height: "auto",
       y: 10,
       pointerEvents: "auto",
       transition: { delayChildren: stagger(0.12, { startDelay: 0.1 }) },
@@ -53,7 +52,7 @@ export default function DropDown({ onExport, onImport }) {
           ${open ? " text-white" : "text-dark-ui-2 hover:text-dark-tx-2"}`}
         aria-label="Menu"
       >
-        <FontAwesomeIcon icon={faBars} />
+        <FontAwesomeIcon className="text-base" icon={faBars} />
       </button>
 
       <motion.ul
@@ -61,8 +60,8 @@ export default function DropDown({ onExport, onImport }) {
         initial={false}
         animate={open ? "open" : "closed"}
         transition={{ duration: 0.2 }}
-        className="top-10 right-1/5 z-50 absolute flex flex-col gap-1 bg-[#1a1a1a] shadow p-2 border
-          border-dark-ui-3 rounded-xl w-48"
+        className="top-10 right-1/5 z-50 absolute flex flex-col sm:gap-1 bg-[#1a1a1a] shadow p-2
+          border border-dark-ui-3 rounded-xl w-fit md:w-48 text-sm"
       >
         <motion.li variants={item}>
           {/* Opção de export */}
@@ -71,8 +70,8 @@ export default function DropDown({ onExport, onImport }) {
               if (onExport) onExport()
               setOpen(false)
             }}
-            className="flex items-center gap-3 hover:bg-dark-ui-3 p-3 rounded-lg outline-none w-full
-              hover:text-white text-left transition-all cursor-pointer"
+            className="flex items-center gap-3 hover:bg-dark-ui-3 p-2 md:p-3 rounded-lg outline-none
+              w-full hover:text-white text-left transition-all cursor-pointer"
           >
             <FontAwesomeIcon icon={faFileExport} className="w-5" />
             <span className="font-medium text-sm">Exportar</span>
@@ -93,7 +92,7 @@ export default function DropDown({ onExport, onImport }) {
           />
           <label
             htmlFor="importFile"
-            className="flex items-center gap-3 hover:bg-dark-ui-3 m-0 p-3 rounded-lg outline-none
+            className="flex items-center gap-3 hover:bg-dark-ui-3 p-2 md:p-3 rounded-lg outline-none
               w-full hover:text-white text-left transition-all cursor-pointer"
           >
             <FontAwesomeIcon icon={faFileImport} className="w-5" />
@@ -108,11 +107,11 @@ export default function DropDown({ onExport, onImport }) {
               navigate(`/?delete=all`)
               setOpen(false)
             }}
-            className="flex items-center gap-3 hover:bg-red-500/10 p-3 rounded-lg outline-none
-              w-full hover:text-red-500 text-left transition-all cursor-pointer"
+            className="flex items-center gap-3 hover:bg-red-500/10 p-2 md:p-3 rounded-lg
+              outline-none w-full hover:text-red-500 text-left transition-all cursor-pointer"
           >
             <FontAwesomeIcon icon={faTrash} className="w-5" />
-            <span className="font-medium text-sm">Deletar Tudo</span>
+            <span className="font-medium text-sm text-nowrap">Deletar Tudo</span>
           </button>
         </motion.li>
       </motion.ul>
