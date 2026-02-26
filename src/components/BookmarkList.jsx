@@ -46,7 +46,9 @@ export default function BookmarkList({ bookmarks }) {
               >
                 <FontAwesomeIcon icon={faAngleLeft} />
               </AnimatedButton>
-              <span> Page {currentPage} </span>
+              <span className="text-sm md:text-base">
+                {currentPage} / {Math.ceil(bookmarks.length / itemsPerPage)}{" "}
+              </span>
               <AnimatedButton
                 className="p-2 disabled:text-dark-ui text-base-400 cursor-pointer
                   disabled:cursor-default"
