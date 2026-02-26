@@ -1,8 +1,8 @@
 import { useLockBodyScroll } from "react-use"
 import { useForm, useWatch } from "react-hook-form"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faX } from "@fortawesome/free-solid-svg-icons"
+import { faX, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import parse from "node-html-parser"
 import { useNavigate } from "react-router"
 import AnimatedButton from "./AnimatedButton"
@@ -29,6 +29,9 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
   })
 
   const navigate = useNavigate()
+
+  const [isFetchingMetadata, setIsFetchingMetadata] = useState(false)
+  const [fetchError, setFetchError] = useState(null)
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
@@ -69,18 +72,23 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
   })
 
   useEffect(() => {
+    const abortController = new AbortController()
+
     async function fetchUrlMetaData(url) {
-      if (!url) return ""
+      if (!url) return
+
+      setIsFetchingMetadata(true)
+      setFetchError(null)
+      const startTime = Date.now()
 
       try {
         const baseUrl = new URL("/api/fetch-metadata", window.location.origin)
         baseUrl.searchParams.append("url", url)
 
-        const res = await fetch(baseUrl)
+        const res = await fetch(baseUrl, { signal: abortController.signal })
 
         if (!res.ok) {
-          console.error("Failed to fetch metadata:", await res.text())
-          return
+          throw new Error(`HTTP ${res.status}`)
         }
 
         const root = parse(await res.text())
@@ -99,14 +107,31 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
           }
         })
 
+        // Garante loading mínimo de 400ms
+        const elapsed = Date.now() - startTime
+        const delay = Math.max(0, 400 - elapsed)
+
+        await new Promise((resolve) => setTimeout(resolve, delay))
+
         reset({
           ...register,
           title: metadata.title,
           author: metadata.author,
           description: metadata.description,
         })
+
+        setFetchError(null)
       } catch (error) {
+        if (error.name === "AbortError") {
+          // Cancelamento não é erro, apenas ignora
+          return
+        }
+
+        // Apenas erros críticos (rede, timeout, HTTP errors)
+        setFetchError("Não foi possível buscar metadados")
         console.error("Error fetching URL metadata:", error)
+      } finally {
+        setIsFetchingMetadata(false)
       }
     }
 
@@ -115,7 +140,13 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
         fetchUrlMetaData(url)
       }, 500)
 
-      return () => clearTimeout(timer)
+      return () => {
+        clearTimeout(timer)
+        abortController.abort()
+      }
+    } else {
+      setIsFetchingMetadata(false)
+      setFetchError(null)
     }
   }, [url, mode, register, reset])
 
@@ -150,12 +181,23 @@ export default function BookmarkForm({ initialData, mode, onSubmit }) {
           />
         </button>
         <div className="flex flex-col gap-2 sm:gap-4 mb-4">
-          <input
-            type="text"
-            placeholder="Fonte/Link"
-            className="my-2 focus:outline-0 text-xs"
-            {...register("url", { required: false })}
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Fonte/Link"
+              className={`my-2 focus:outline-0 text-xs w-full
+                ${isFetchingMetadata ? "pr-8 truncate" : ""}`}
+              {...register("url", { required: false })}
+            />
+            {isFetchingMetadata && (
+              <FontAwesomeIcon
+                icon={faSpinner}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-yellow-400 text-sm
+                  animate-spin"
+              />
+            )}
+          </div>
+          {fetchError && <p className="text-red-500 text-xs mt-1">{fetchError}</p>}
 
           <hr className="border-dark-ui-3 w-full" />
 
