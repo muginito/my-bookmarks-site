@@ -10,7 +10,7 @@ export default function BookmarkItem({
   author,
   year,
   description,
-  date,
+  createdDate,
   onEdit,
   onDelete,
 }) {
@@ -76,7 +76,9 @@ export default function BookmarkItem({
       {author && <span className="w-fit text-dark-tx-2 text-sm md:text-base">{author}</span>}
       <p className="my-8 text-dark-tx text-sm md:text-base whitespace-pre-wrap">{description}</p>
       {/* dia de mês de ano */}
-      <span className="right-6 bottom-6 absolute text-dark-tx-3 text-xs md:text-sm">{date}</span>
+      <span className="right-6 bottom-6 absolute text-dark-tx-3 text-xs md:text-sm">
+        {createdDate}
+      </span>
     </motion.div>
   )
 }

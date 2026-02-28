@@ -26,7 +26,7 @@ export default function BookmarkList({ bookmarks }) {
             author={bookmark.author}
             description={bookmark.description}
             year={bookmark.year}
-            date={bookmark.date}
+            createdDate={bookmark.createdDate}
             url={bookmark.url}
             tags={bookmark.tags}
             onDelete={() => navigate(`/?delete=${bookmark.id}`)}
