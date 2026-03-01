@@ -1,9 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* --font-inter: "Inter", sans-serif; */
   --font-heading: "Montserrat", sans-serif;
+}
+
+@layer base {
+  .dark {
+    color-scheme: dark;
+  }
 }
 
 html {
@@ -35,4 +42,15 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-yellow-400);
+}
+
+body {
+  background-color: #ffffff; 
+  color: #1a1a1a;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #121212; 
+  color: #f3f4f6;
 }

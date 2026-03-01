@@ -133,33 +133,43 @@ function App() {
         </div>
       </div>
 
-      <div className="top-0 z-1 sticky backdrop-blur-md border-dark-ui border-b w-full">
-        {/* Barra de busca */}
+      {/* Ajuste na Barra de Busca para suportar os dois temas */}
+      <div
+        className="top-0 z-1 sticky backdrop-blur-md border-gray-200 dark:border-dark-ui border-b
+          w-full transition-colors duration-300"
+      >
         <div className="flex justify-center gap-4 mx-auto py-4 w-full max-w-4xl">
           <search
-            className="flex items-center gap-3 bg-dark-ui px-4 py-2 md:py-3 rounded-full outline-2
-              outline-dark-ui-3 hover:outline-yellow-400 w-[80%] duration-150 ease"
+            className="flex items-center gap-3 bg-gray-100 dark:bg-dark-ui px-4 py-2 md:py-3
+              rounded-full outline-2 outline-transparent hover:outline-yellow-400 w-[80%]
+              duration-150 ease transition-all shadow-sm dark:shadow-none"
           >
-            <FontAwesomeIcon icon={faSearch} className="text-dark-ui-3 text-base md:text-lg" />
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="text-gray-400 dark:text-dark-ui-3 text-base md:text-lg"
+            />
             <input
-              className="bg-transparent outline-none w-full"
+              className="bg-transparent outline-none w-full text-gray-900 dark:text-white
+                placeholder-gray-500"
               id="search"
               type="search"
               placeholder="Buscar"
               onChange={(e) => setSearch(e.target.value)}
             />
           </search>
+
           <AnimatedButton
             className="hidden 2xl:block active:inset-shadow-sm active:inset-shadow-yellow-700
-              bg-dark-ye hover:bg-yellow-300 px-5 rounded-4xl w-fit h-min-full font-bold
-              text-dark-bg-2 text-sm md:text-base whitespace-nowrap cursor-pointer"
+              bg-yellow-400 hover:bg-yellow-300 px-5 rounded-4xl w-fit h-min-full font-bold
+              text-black text-sm md:text-base whitespace-nowrap cursor-pointer transition-colors"
             onClick={() => navigate("/?form=new")}
           >
             Novo Bookmark
           </AnimatedButton>
+
           <AnimatedButton
-            className="hidden 2xl:hidden sm:block text-dark-bg-2 text-4xl sm:text-5xl
-              whitespace-nowrap cursor-pointer"
+            className="hidden 2xl:hidden sm:block text-4xl sm:text-5xl whitespace-nowrap
+              cursor-pointer"
             onClick={() => navigate("/?form=new")}
             aria-label="Novo bookmark"
           >

@@ -4,11 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/bookmark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meus Bookmarks</title>
-    <script type="module" src="src/main.jsx" defer></script>
-  </head>
+    <title>My Bookmarks</title>
 
-  <body class="bg-dark-bg text-dark-tx antialiased">
+    <script>
+      ;(function () {
+        const theme = localStorage.getItem("theme") || "auto"
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+        const isDark = theme === "dark" || (theme === "auto" && prefersDark)
+
+        if (isDark) {
+          document.documentElement.classList.add("dark")
+        } else {
+          document.documentElement.classList.remove("dark")
+        }
+      })()
+    </script>
+  </head>
+  <body
+    class="antialiased"
+  >
     <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
